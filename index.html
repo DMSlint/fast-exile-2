@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Fast Exile 2 - Campaign Helper</title>
+    <meta name="description" content="The definitive interactive leveling tracker for Path of Exile 2.">
+    <link rel="icon" type="image/webp" href="img/QuestItem.webp">
+    
+    <style>
+        /* --- VARIABLES & THEMES --- */
+        :root {
+            --max-width: 900px;
+            
+            /* Dark Mode (Default) */
+            --bg-core: #050505;
+            --bg-card: #121212;
+            --bg-header: rgba(5, 5, 5, 0.95);
+            --bg-hover: #1a1a1a;
+            --border: #333;
+            --text-main: #bfbfbf;
+            --text-bright: #ffffff;
+            --text-muted: #666;
+            
+            /* PoE Colors */
+            --c-gold: #dfcf99;
+            --c-blue: #8888ff;
+            --c-green: #55ff55;
+            --c-unique: #af6025;
+            --c-warn: #ff4444;
+            
+            --btn-bg: #1a1a1a;
+            --btn-border: #444;
+            --input-bg: #111;
+            --check-bg: #080808;
+            
+            --font-main: 'Fontin', 'Segoe UI', Tahoma, sans-serif;
+        }
+
+        /* Light Mode */
+        [data-theme="light"] {
+            --bg-core: #1a1812;
+            --bg-card: #e3dec8;
+            --bg-header: #2b2820;
+            --bg-hover: #dcd5bb;
+            --border: #b0a48f;
+            --text-main: #2f2f2f;
+            --text-bright: #000000;
+            --text-muted: #555;
+            --c-gold: #8a6d3b;
+            --c-blue: #0044cc;
+            --c-green: #006600;
+            --c-unique: #8a4b1f;
+            --btn-bg: #dcd5bb;
+            --btn-border: #8f8570;
+            --input-bg: #f0ebd8;
+            --check-bg: #cfc8b0;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            background-color: var(--bg-core);
+            color: var(--text-main);
+            font-family: var(--font-main);
+            margin: 0;
+            padding: 0;
+            font-size: 16px;
+            line-height: 1.5;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        /* --- HEADER --- */
+        header {
+            background: var(--bg-header);
+            border-bottom: 1px solid var(--border);
+            padding: 15px 20px 0 20px; /* Padding bottom removed for progress bar */
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+
+        .header-content {
+            max-width: var(--max-width);
+            margin: 0 auto;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 1.4rem;
+            color: var(--c-gold);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+        }
+
+        .controls { display: flex; gap: 10px; align-items: center; }
+
+        .theme-btn {
+            background: transparent;
+            border: none;
+            color: var(--c-gold);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px;
+            display: flex;
+            align-items: center;
+        }
+
+        .settings-container { position: relative; }
+        .settings-btn {
+            background: var(--btn-bg);
+            border: 1px solid var(--btn-border);
+            color: var(--text-main);
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            min-width: 180px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            flex-direction: column;
+            margin-top: 5px;
+            overflow: hidden;
+            z-index: 200;
+        }
+        .dropdown-menu.show { display: flex; }
+        .dropdown-item {
+            padding: 12px 15px;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-main);
+            text-align: left;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .dropdown-item:hover { background: var(--bg-hover); }
+        .dropdown-item:last-child { border-bottom: none; }
+        .dropdown-item.danger { color: var(--c-warn); }
+
+        /* Search Bar */
+        .search-wrapper {
+            margin-bottom: 15px;
+        }
+        .search-input {
+            width: 100%;
+            background: var(--input-bg);
+            border: 1px solid var(--btn-border);
+            color: var(--text-main);
+            padding: 10px 15px;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: 0.2s;
+        }
+        .search-input:focus {
+            outline: none;
+            border-color: var(--c-blue);
+            box-shadow: 0 0 5px rgba(136, 136, 255, 0.3);
+        }
+
+        .progress-bar {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            height: 4px;
+            background: #333;
+            border-radius: 2px 2px 0 0;
+        }
+        .progress-fill {
+            height: 100%;
+            background: var(--c-gold);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        /* --- MAIN CONTENT --- */
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 20px 10px 100px 10px;
+        }
+
+        .act-title {
+            font-size: 1.8rem;
+            color: var(--c-gold);
+            text-align: center;
+            margin: 40px 0 20px 0;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px rgba(200, 170, 100, 0.2);
+        }
+
+        /* --- ZONE CARDS --- */
+        .zone-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            transition: border-color 0.3s;
+        }
+        
+        .zone-card.town { border-left: 4px solid var(--c-green); }
+        .zone-card.zone { border-left: 4px solid var(--border); }
+
+        .zone-header {
+            padding: 10px 15px;
+            background: rgba(0,0,0,0.1);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .zone-info { display: flex; align-items: center; gap: 12px; }
+        
+        .zone-icon-large {
+            width: 28px; height: 28px;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+        }
+
+        .zone-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--text-bright);
+        }
+
+        .check-all-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .check-all-btn:hover { color: var(--c-green); border-color: var(--c-green); }
+
+        .zone-content { padding: 0; }
+
+        .task-row {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            transition: background 0.1s;
+        }
+        .task-row:last-child { border-bottom: none; }
+        .task-row:hover { background: var(--bg-hover); }
+        .task-row.hidden-by-toggle { display: none; }
+        .task-row.hidden-by-search { display: none; }
+        
+        .task-row.sub-zone {
+            padding-left: 30px;
+            background: rgba(0,0,0,0.05);
+            border-left: 3px solid var(--border);
+        }
+
+        .task-icon {
+            width: 24px; height: 24px;
+            object-fit: contain;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .task-info { flex: 1; padding-right: 10px; }
+        
+        .task-desc {
+            font-size: 1rem;
+            color: var(--text-main);
+            line-height: 1.3;
+        }
+        
+        .task-note {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+            font-style: italic;
+        }
+
+        .checkbox {
+            width: 26px; height: 26px;
+            border: 2px solid var(--border);
+            border-radius: 5px;
+            background: var(--check-bg);
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+            transition: 0.2s;
+        }
+        
+        .task-row.completed { opacity: 0.5; }
+        .task-row.completed .task-desc { text-decoration: line-through; }
+        .task-row.completed .checkbox {
+            background: var(--c-green);
+            border-color: var(--c-green);
+        }
+        .task-row.completed .checkbox::after {
+            content: '✔'; color: #000; font-weight: bold; font-size: 16px;
+        }
+
+        /* Highlights */
+        .hl-boss { color: var(--c-unique); font-weight: bold; }
+        .hl-item { color: var(--c-green); font-weight: bold; }
+        .hl-wp { color: var(--c-blue); font-weight: bold; }
+        .hl-perm { color: var(--c-gold); font-weight: bold; border-bottom: 1px dotted var(--c-gold); }
+        .hl-warn { color: var(--c-warn); font-weight: bold; }
+        
+        .badge {
+            font-size: 0.7rem;
+            padding: 2px 5px;
+            border-radius: 3px;
+            margin-right: 6px;
+            font-weight: bold;
+            text-transform: uppercase;
+            vertical-align: middle;
+            display: inline-block;
+        }
+        .badge-opt { border: 1px solid var(--border); color: var(--text-muted); }
+        .badge-perm { background: rgba(223, 207, 153, 0.15); border: 1px solid var(--c-gold); color: var(--c-gold); }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            border-top: 1px solid var(--border);
+            padding: 30px 20px;
+            line-height: 1.6;
+        }
+        .kofi-link {
+            display: inline-block;
+            margin-top: 15px;
+            color: var(--bg-core);
+            background: var(--c-gold);
+            padding: 10px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: transform 0.2s;
+        }
+        .kofi-link:hover { transform: scale(1.05); }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 1.1rem; }
+            .act-title { font-size: 1.4rem; margin: 20px 0; }
+            .zone-header { padding: 10px; }
+            .task-row { padding: 12px 10px; }
+            .task-icon { width: 20px; height: 20px; margin-right: 10px; }
+            .task-desc { font-size: 0.95rem; }
+            .checkbox { width: 24px; height: 24px; }
+        }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-content">
+        <div class="header-top">
+            <h1>
+                <img src="img/QuestItem.webp" alt="" style="width: 28px;">
+                Fast Exile 2
+            </h1>
+            <div class="controls">
+                <button class="theme-btn" onclick="toggleTheme()" title="Toggle Theme">
+                    <span id="theme-icon">☀</span>
+                </button>
+                
+                <div class="settings-container">
+                    <button class="settings-btn" onclick="toggleSettings()">⚙ Menu</button>
+                    <div id="settings-menu" class="dropdown-menu">
+                        <button class="dropdown-item" onclick="toggleHideCompleted()">
+                            <span id="hide-check">☐</span> Hide Completed
+                        </button>
+                        <button class="dropdown-item" onclick="exportData()">Export Save</button>
+                        <button class="dropdown-item" onclick="importData()">Import Save</button>
+                        <button class="dropdown-item danger" onclick="resetProgress()">Reset All</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Search Bar -->
+        <div class="search-wrapper">
+            <input type="text" id="search" class="search-input" placeholder="Search for gems, bosses, zones..." onkeyup="filterSteps()">
+        </div>
+    </div>
+    <div class="progress-bar"><div id="progress-fill" class="progress-fill"></div></div>
+</header>
+
+<div class="container" id="app">
+    <!-- Content Generated by JS -->
+</div>
+
+<footer>
+    <p>Based on guides by Maxroll, Mobalytics & PoE2DB.</p>
+    <p style="opacity: 0.7;">This is a fan-made tool. Path of Exile content and materials are trademarks and copyrights of Grinding Gear Games or its licensors. Not affiliated with GGG.</p>
+    
+
+    <a href="https://ko-fi.com/dmslint" target="_blank" class="kofi-link">☕ Buy me a Coffee</a>
+</footer>
+
+<script>
+    // --- CONFIGURATION ---
+    const ICONS = {
+        town: "Town.webp",
+        boss: "boss.webp",
+        wp: "Waypoint.webp",
+        npc: "NPC.webp",
+        exit: "Entrance.webp",
+        item: "QuestItem.webp",
+        util: "GenericUtilityIcon.webp"
+    };
+
+    // --- DATA STRUCTURE ---
+    const campaignData = [
+        // --- ACT 1 ---
+        {
+            act: "Act 1: Ogham",
+            zones: [
+                {
+                    name: "The Riverbank", type: "zone", icon: "exit",
+                    tasks: [
+                        { icon: "boss", text: "Kill The Bloated Miller" },
+                        { icon: "town", text: "Enter Clearfell Encampment" }
+                    ]
+                },
+                {
+                    name: "Clearfell Encampment", type: "town", icon: "town",
+                    tasks: [
+                        { icon: "npc", text: "Talk to Renly, Una & Finn" },
+                        { icon: "exit", text: "Exit to Clearfell" }
+                    ]
+                },
+                {
+                    name: "Clearfell", type: "zone", icon: "exit",
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "boss", text: "Kill Beira of the Rotten Pack", note: "Reward: +10% Cold Res (Permanent)", perm: true },
+                        { icon: "util", text: "Find Mysterious Campsite", opt: true, note: "Reward: Uncut Support Gem" },
+                        { icon: "exit", text: "Find exit to The Grelwood" }
+                    ]
+                },
+                {
+                    name: "Mud Burrow", type: "zone", icon: "exit", sub: true,
+                    tasks: [
+                        { icon: "boss", text: "Kill The Devourer", opt: true, note: "Located inside Clearfell" }
+                    ]
+                },
+                {
+                    name: "The Grelwood", type: "zone", icon: "exit",
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "boss", text: "Kill The Brambleghast", opt: true },
+                        { icon: "boss", text: "Kill Areagne, Forgotten Witch", opt: true, note: "Inside Witch Hut" },
+                        { icon: "quest", text: "Find Tree of Souls" },
+                        { icon: "exit", text: "Find exit to The Red Vale" }
+                    ]
+                },
+                {
+                    name: "The Red Vale", type: "zone", icon: "exit",
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "item", text: "Interact with 3 Obelisks of Rust" },
+                        { icon: "boss", text: "Kill The Rust King" },
+                        { icon: "town", text: "Return to Town, get Runic Spikes" },
+                        { icon: "quest", text: "Return to Grelwood Tree of Souls", note: "Use Spikes to open Grim Tangle" }
+                    ]
+                },
+                {
+                    name: "The Grim Tangle", type: "zone", icon: "exit",
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "boss", text: "Kill The Rotten Druid", opt: true },
+                        { icon: "exit", text: "Find Cemetery of the Eternals" }
+                    ]
+                },
+                {
+                    name: "Cemetery of the Eternals", type: "zone", icon: "exit",
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "npc", text: "Talk to Lachlann the Lost" },
+                        { icon: "exit", text: "Find Tomb of the Consort" },
+                        { icon: "exit", text: "Find Mausoleum of the Praetor" }
+                    ]
+                },
+                {
+                    name: "Tomb & Mausoleum", type: "zone", icon: "boss", sub: true,
+                    tasks: [
+                        { icon: "boss", text: "Kill Asinia, the Praetor's Consort", note: "Inside Tomb" },
+                        { icon: "boss", text: "Kill Draven, the Eternal Praetor", note: "Inside Mausoleum" }
+                    ]
+                },
+                {
+                    name: "Return to Cemetery", type: "zone", icon: "boss",
+                    tasks: [
+                        { icon: "boss", text: "Kill Lachlann of Endless Lament" },
+                        { icon: "exit", text: "Enter Hunting Grounds" }
+                    ]
+                },
+                {
+                    name: "Hunting Grounds", type: "zone", icon: "exit",
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "boss", text: "Kill The Crowbell", perm: true, note: "Reward: +2 Passive Skill Points" },
+                        { icon: "exit", text: "Find exit to Freythorn" }
+                    ]
+                },
+                {
+                    name: "Freythorn", type: "zone", icon: "exit", sub: true,
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "quest", text: "Complete 3 Ritual Altars" },
+                        { icon: "boss", text: "Kill The King in the Mists", perm: true, note: "Reward: +30 Spirit" }
+                    ]
+                },
+                {
+                    name: "Ogham Farmlands", type: "zone", icon: "exit",
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "item", text: "Find Una's Lute", perm: true, note: "Deliver to Una. Reward: +2 Passive Points" },
+                        { icon: "exit", text: "Find exit to Ogham Village" }
+                    ]
+                },
+                {
+                    name: "Ogham Village", type: "zone", icon: "exit",
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "item", text: "Find Smithing Tools", note: "Unlocks Salvaging Bench" },
+                        { icon: "boss", text: "Kill The Executioner" }
+                    ]
+                },
+                {
+                    name: "The Manor Ramparts", type: "zone", icon: "exit",
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "util", text: "Find Gallows", opt: true, note: "Reward: Uncut Support Gem" },
+                        { icon: "exit", text: "Enter Ogham Manor" }
+                    ]
+                },
+                {
+                    name: "Ogham Manor", type: "zone", icon: "exit",
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "boss", text: "Kill Candlemass, the Living Rite", perm: true, note: "Reward: +20 Max Life" },
+                        { icon: "boss", text: "Kill Count Geonor (Act Boss)" }
+                    ]
+                }
+            ]
+        },
+        // --- ACT 2 ---
+        {
+            act: "Act 2: Vastiri",
+            zones: [
+                {
+                    name: "Vastiri Outskirts", type: "zone", icon: "exit",
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "boss", text: "Kill Rathbreaker" },
+                        { icon: "town", text: "Enter The Ardura Caravan" }
+                    ]
+                },
+                {
+                    name: "The Ardura Caravan", type: "town", icon: "town",
+                    tasks: [
+                        { icon: "npc", text: "Talk to Sekhema Asala & Hooded One" },
+                        { icon: "item", text: "Use Desert Map to Mawdun Quarry" }
+                    ]
+                },
+                {
+                    name: "Mawdun Quarry", type: "zone", icon: "exit",
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "exit", text: "Find exit to Mawdun Mine" }
+                    ]
+                },
+                {
+                    name: "Mawdun Mine", type: "zone", icon: "exit",
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "boss", text: "Kill Rudja, the Dread Engineer" },
+                        { icon: "npc", text: "Free Risu" }
+                    ]
+                },
+                {
+                    name: "Traitor's Passage", type: "zone", icon: "exit",
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "boss", text: "Kill Balbala, the Traitor", note: "Get Djinn Barya (Ascendancy)" },
+                        { icon: "exit", text: "Find exit to Halani Gates" }
+                    ]
+                },
+                {
+                    name: "The Halani Gates", type: "zone", icon: "exit",
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "boss", text: "Kill Jamanra, the Risen King" }
+                    ]
+                },
+                {
+                    name: "Keth", type: "zone", icon: "exit",
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "boss", text: "Kill Kabala, Constrictor Queen", perm: true, note: "Reward: +2 Passive Points" },
+                        { icon: "item", text: "Find Kabala Clan Relic" },
+                        { icon: "exit", text: "Find exit to The Lost City" }
+                    ]
+                },
+                {
+                    name: "The Lost City", type: "zone", icon: "exit",
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "exit", text: "Find exit to Buried Shrines" }
+                    ]
+                },
+                {
+                    name: "Buried Shrines", type: "zone", icon: "exit", sub: true,
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "util", text: "Elemental Offering Event", opt: true, note: "Reward: Res Ring" },
+                        { icon: "boss", text: "Kill Azarian, the Forsaken Son", note: "Get Essence of Water" }
+                    ]
+                },
+                {
+                    name: "Mastodon Badlands", type: "zone", icon: "exit",
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "item", text: "Find Sun Clan Relic" },
+                        { icon: "exit", text: "Find exit to The Bone Pits" }
+                    ]
+                },
+                {
+                    name: "The Bone Pits", type: "zone", icon: "exit", sub: true,
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "boss", text: "Kill Iktab, the Deathlord & Ekbab, Ancient Steed", note: "Loot Horn" }
+                    ]
+                },
+                {
+                    name: "Valley of the Titans", type: "zone", icon: "exit",
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "item", text: "Place Relics at Altar", perm: true, note: "Choose Buff: Charm Charges or Duration" },
+                        { icon: "exit", text: "Enter Titan Grotto" }
+                    ]
+                },
+                {
+                    name: "Titan Grotto", type: "zone", icon: "exit", sub: true,
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "boss", text: "Kill Zalmarath, the Colossus" }
+                    ]
+                },
+                {
+                    name: "Deshar", type: "zone", icon: "exit",
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "item", text: "Find Final Letter", perm: true, note: "Deliver to Shambrin. Reward: +2 Passive Points" },
+                        { icon: "exit", text: "Find Path of Mourning" }
+                    ]
+                },
+                {
+                    name: "Spires of Deshar", type: "zone", icon: "exit", sub: true,
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "util", text: "Find Sisters of Garukhan Shrine", perm: true, note: "Reward: +10% Lightning Res" },
+                        { icon: "boss", text: "Kill Tor Gul, the Defiler" }
+                    ]
+                },
+                {
+                    name: "The Dreadnought", type: "zone", icon: "exit",
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "boss", text: "Kill Jamanra, the Abomination (Act Boss)" }
+                    ]
+                }
+            ]
+        },
+        // --- ACT 3 ---
+        {
+            act: "Act 3: Utzaal",
+            zones: [
+                {
+                    name: "Sandswept Marsh", type: "zone", icon: "exit",
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "boss", text: "Kill Rootdredge", opt: true, note: "Reward: Lvl 9 Uncut Skill Gem" },
+                        { icon: "util", text: "Find Orok Campfire", opt: true, note: "Reward: Lesser Jeweller's Orb" },
+                        { icon: "town", text: "Enter Ziggurat Encampment" }
+                    ]
+                },
+                {
+                    name: "Ziggurat Encampment", type: "town", icon: "town",
+                    tasks: [
+                        { icon: "npc", text: "Talk to Alva & Oswald" },
+                        { icon: "exit", text: "Exit to Jungle Ruins" }
+                    ]
+                },
+                {
+                    name: "Jungle Ruins", type: "zone", icon: "exit",
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "boss", text: "Kill Mighty Silverfist", perm: true, note: "Reward: +2 Passive Points" },
+                        { icon: "exit", text: "Find Venom Crypts" }
+                    ]
+                },
+                {
+                    name: "The Venom Crypts", type: "zone", icon: "exit", sub: true,
+                    tasks: [
+                        { icon: "item", text: "Find Venom Vial", perm: true, note: "Deliver to Servi. WARNING: Permanent Choice (Stun/Ailment/Mana)" }
+                    ]
+                },
+                {
+                    name: "Infested Barrens", type: "zone", icon: "exit",
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "exit", text: "Find The Azak Bog" }
+                    ]
+                },
+                {
+                    name: "The Azak Bog", type: "zone", icon: "exit", sub: true,
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "boss", text: "Kill Ignagduk, the Bog Witch", perm: true, note: "Reward: +30 Spirit" }
+                    ]
+                },
+                {
+                    name: "Chimeral Wetlands", type: "zone", icon: "exit",
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "boss", text: "Kill Xyclucian, the Chimera" },
+                        { icon: "exit", text: "Enter Jiquani's Machinarium" }
+                    ]
+                },
+                {
+                    name: "Jiquani's Machinarium", type: "zone", icon: "exit", sub: true,
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "boss", text: "Kill Blackjaw, the Remnant", perm: true, note: "Reward: +10% Fire Res" },
+                        { icon: "exit", text: "Enter Jiquani's Sanctum" }
+                    ]
+                },
+                {
+                    name: "Jiquani's Sanctum", type: "zone", icon: "exit", sub: true,
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "boss", text: "Kill Zicoatl, Warden of the Core", note: "Loot Large Soul Core" }
+                    ]
+                },
+                {
+                    name: "The Matlan Waterways", type: "zone", icon: "exit",
+                    tasks: [
+                        { icon: "item", text: "Use Large Soul Core to enter" },
+                        { icon: "exit", text: "Find The Drowned City" }
+                    ]
+                },
+                {
+                    name: "The Drowned City", type: "zone", icon: "exit",
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "exit", text: "Find The Molten Vault" }
+                    ]
+                },
+                {
+                    name: "The Molten Vault", type: "zone", icon: "exit", sub: true,
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "boss", text: "Kill Mektul, the Forgemaster", note: "Unlocks Reforging Bench" }
+                    ]
+                },
+                {
+                    name: "Apex of Filth", type: "zone", icon: "exit",
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "boss", text: "Kill Queen of Filth" }
+                    ]
+                },
+                {
+                    name: "Temple of Kopec", type: "zone", icon: "exit",
+                    tasks: [
+                        { icon: "boss", text: "Kill Ketzuli, High Priest of the Sun" },
+                        { icon: "exit", text: "Enter Utzaal (Past)" }
+                    ]
+                },
+                {
+                    name: "Utzaal (Past)", type: "zone", icon: "exit",
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "boss", text: "Kill Viper Napuatzi" },
+                        { icon: "exit", text: "Enter Aggorat" }
+                    ]
+                },
+                {
+                    name: "Aggorat", type: "zone", icon: "exit",
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "item", text: "Sacrifice Heart at Altar", perm: true, note: "Reward: +2 Passive Points" },
+                        { icon: "exit", text: "Enter Black Chambers" }
+                    ]
+                },
+                {
+                    name: "The Black Chambers", type: "zone", icon: "exit",
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "boss", text: "Kill Doryani, Royal Thaumaturge (Act Boss)" }
+                    ]
+                }
+            ]
+        },
+        // --- ACT 4 ---
+        {
+            act: "Act 4: Ngamakanui",
+            zones: [
+                {
+                    name: "Kingsmarch", type: "town", icon: "town",
+                    tasks: [
+                        { icon: "npc", text: "Talk to Makoru to Sail" }
+                    ]
+                },
+                {
+                    name: "Whakapanu Island", type: "zone", icon: "exit",
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "item", text: "Find Shark Pit", note: "Get Shark Fin" },
+                        { icon: "exit", text: "Find Singing Caverns" }
+                    ]
+                },
+                {
+                    name: "Singing Caverns", type: "zone", icon: "exit", sub: true,
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "util", text: "Find Beckoning Clam", opt: true, note: "Reward: Rare Amulet" },
+                        { icon: "boss", text: "Kill Diamora, Song of Death" }
+                    ]
+                },
+                {
+                    name: "Shrike Island", type: "zone", icon: "exit",
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "boss", text: "Kill Scourge of the Skies" }
+                    ]
+                },
+                {
+                    name: "Abandoned Prison", type: "zone", icon: "exit",
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "util", text: "Find Goddess of Justice", perm: true, note: "Choice: Life or Mana Flask Recovery" },
+                        { icon: "exit", text: "Find Solitary Confinement" }
+                    ]
+                },
+                {
+                    name: "Solitary Confinement", type: "zone", icon: "exit", sub: true,
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "boss", text: "Kill The Prisoner" }
+                    ]
+                },
+                {
+                    name: "Isle of Kin", type: "zone", icon: "exit",
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "boss", text: "Kill The Blind Beast" },
+                        { icon: "exit", text: "Find Volcanic Warrens" }
+                    ]
+                },
+                {
+                    name: "Volcanic Warrens", type: "zone", icon: "exit", sub: true,
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "boss", text: "Kill Krutog, Lord of Kin" }
+                    ]
+                },
+                {
+                    name: "Kedge Bay", type: "zone", icon: "exit",
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "item", text: "Find Torn Map Piece" },
+                        { icon: "exit", text: "Find Journey's End" }
+                    ]
+                },
+                {
+                    name: "Journey's End", type: "zone", icon: "exit", sub: true,
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "boss", text: "Kill Omniphobia, Fear Manifest", perm: true, note: "Reward: +2 Passive Points" }
+                    ]
+                },
+                {
+                    name: "Eye of Hinekora", type: "zone", icon: "exit",
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "util", text: "Find Silent Hall", perm: true, note: "Reward: +5% Max Mana" },
+                        { icon: "exit", text: "Find Halls of the Dead" }
+                    ]
+                },
+                {
+                    name: "Halls of the Dead", type: "zone", icon: "exit", sub: true,
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "quest", text: "Complete 3 Tests", perm: true, note: "WARNING: Permanent Stat/Res Choice" },
+                        { icon: "boss", text: "Kill Yama the White" },
+                        { icon: "exit", text: "Enter Trial of the Ancestors" }
+                    ]
+                },
+                {
+                    name: "Trial of the Ancestors", type: "zone", icon: "exit", sub: true,
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "npc", text: "Get Tattoo from Navali", perm: true, note: "Reward: +2 Passive Points" }
+                    ]
+                },
+                {
+                    name: "Arastas", type: "zone", icon: "exit",
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "util", text: "Loot Golden Bells", opt: true, note: "Reward: Currency" },
+                        { icon: "exit", text: "Find The Excavation" }
+                    ]
+                },
+                {
+                    name: "The Excavation", type: "zone", icon: "exit", sub: true,
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "boss", text: "Kill Benedictus, First Herald of Utopia" }
+                    ]
+                },
+                {
+                    name: "Heart of the Tribe", type: "zone", icon: "exit",
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "boss", text: "Kill Tavakai, the Chieftain (Act Boss)" }
+                    ]
+                }
+            ]
+        },
+        // --- INTERLUDES ---
+        {
+            act: "Interludes",
+            zones: [
+                {
+                    name: "Wolvenhold", type: "zone", icon: "boss",
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "boss", text: "Kill Oswin, the Dread Warden", perm: true, note: "Reward: +2 Passive Skill Points" }
+                    ]
+                },
+                {
+                    name: "The Khari Crossing", type: "zone", icon: "exit",
+                    tasks: [
+                        { icon: "util", text: "Find Molten Shrine", perm: true, note: "Reward: +5% Max Life" },
+                        { icon: "boss", text: "Kill Akthi & Anundr", perm: true, note: "Reward: +2 Passive Skill Points" }
+                    ]
+                },
+                {
+                    name: "Qimah", type: "zone", icon: "quest",
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "util", text: "Find Seven Pillars", perm: true, note: "Choose Bonus (Swappable)" }
+                    ]
+                },
+                {
+                    name: "Kriar Village", type: "zone", icon: "boss",
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "boss", text: "Kill Lythara, the Wayward Spear", perm: true, note: "Reward: +40 Spirit" }
+                    ]
+                },
+                {
+                    name: "Howling Caves", type: "zone", icon: "boss",
+                    tasks: [
+                        { icon: "wp", text: "Activate Waypoint" },
+                        { icon: "boss", text: "Kill The Abominable Yeti", perm: true, note: "Reward: +2 Passive Skill Points" }
+                    ]
+                }
+            ]
+        }
+    ];
+
+    // --- APP LOGIC ---
+    const app = document.getElementById('app');
+    const progressFill = document.getElementById('progress-fill');
+    const settingsMenu = document.getElementById('settings-menu');
+    const hideCheck = document.getElementById('hide-check');
+    const themeIcon = document.getElementById('theme-icon');
+    const searchInput = document.getElementById('search');
+
+    let progressState = JSON.parse(localStorage.getItem('poe2_progress')) || {};
+    let hideCompleted = JSON.parse(localStorage.getItem('poe2_hide')) || false;
+    let currentTheme = localStorage.getItem('poe2_theme') || 'dark';
+
+    // Init
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    updateThemeIcon();
+    updateHideCheck();
+    render();
+
+    function toggleSettings() {
+        settingsMenu.classList.toggle('show');
+    }
+
+    window.onclick = function(event) {
+        if (!event.target.matches('.settings-btn')) {
+            settingsMenu.classList.remove('show');
+        }
+    }
+
+    function toggleTheme() {
+        currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        localStorage.setItem('poe2_theme', currentTheme);
+        updateThemeIcon();
+    }
+
+    function updateThemeIcon() {
+        themeIcon.textContent = currentTheme === 'dark' ? '☀' : '☾';
+    }
+
+    function toggleHideCompleted() {
+        hideCompleted = !hideCompleted;
+        localStorage.setItem('poe2_hide', hideCompleted);
+        updateHideCheck();
+        render();
+    }
+
+    function updateHideCheck() {
+        hideCheck.textContent = hideCompleted ? '☑' : '☐';
+    }
+
+    function saveState() {
+        localStorage.setItem('poe2_progress', JSON.stringify(progressState));
+        updateProgress();
+    }
+
+    function updateProgress() {
+        let total = 0, completed = 0;
+        campaignData.forEach((act, aIdx) => {
+            act.zones.forEach((zone, zIdx) => {
+                zone.tasks.forEach((task, tIdx) => {
+                    total++;
+                    if (progressState[`${aIdx}-${zIdx}-${tIdx}`]) completed++;
+                });
+            });
+        });
+        const pct = total === 0 ? 0 : (completed / total) * 100;
+        progressFill.style.width = `${pct}%`;
+    }
+
+    function resetProgress() {
+        if(confirm("Are you sure you want to reset all progress?")) {
+            progressState = {};
+            saveState();
+            render();
+        }
+    }
+
+    function toggleZone(aIdx, zIdx) {
+        const zone = campaignData[aIdx].zones[zIdx];
+        const allDone = zone.tasks.every((_, tIdx) => progressState[`${aIdx}-${zIdx}-${tIdx}`]);
+        
+        zone.tasks.forEach((_, tIdx) => {
+            const key = `${aIdx}-${zIdx}-${tIdx}`;
+            if (allDone) delete progressState[key];
+            else progressState[key] = true;
+        });
+        saveState();
+        render();
+    }
+
+    function exportData() {
+        const blob = new Blob([JSON.stringify(progressState)], {type: "application/json"});
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = "poe2_tracker.json";
+        a.click();
+    }
+
+    function importData() {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = '.json';
+        input.onchange = e => {
+            const reader = new FileReader();
+            reader.onload = ev => {
+                try {
+                    progressState = JSON.parse(ev.target.result);
+                    saveState();
+                    render();
+                } catch(err) { alert("Invalid file"); }
+            };
+            reader.readAsText(e.target.files[0]);
+        };
+        input.click();
+    }
+
+    function filterSteps() {
+        const term = searchInput.value.toLowerCase();
+        const rows = document.querySelectorAll('.task-row');
+        
+        rows.forEach(row => {
+            const text = row.innerText.toLowerCase();
+            if (text.includes(term)) {
+                row.classList.remove('hidden-by-search');
+            } else {
+                row.classList.add('hidden-by-search');
+            }
+        });
+    }
+
+    function processText(text) {
+        if (!text) return "";
+        let html = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+        const bosses = [
+            "Beira of the Rotten Pack", "The Rust King", "The Bloated Miller", "The Devourer", "The Brambleghast", "Areagne, Forgotten Witch", "The Rotten Druid", "Asinia, the Praetor's Consort", "Draven, the Eternal Praetor", "Lachlann of Endless Lament", "The Crowbell", "The King in the Mists", "The Executioner", "Candlemass, the Living Rite", "Count Geonor",
+            "Rathbreaker", "Rudja, the Dread Engineer", "Balbala, the Traitor", "Jamanra, the Risen King", "Kabala, Constrictor Queen", "Azarian, the Forsaken Son", "Iktab, the Deathlord", "Ekbab, Ancient Steed", "Zalmarath, the Colossus", "Tor Gul, the Defiler", "Jamanra, the Abomination",
+            "Rootdredge", "Mighty Silverfist", "Ignagduk, the Bog Witch", "Xyclucian, the Chimera", "Blackjaw, the Remnant", "Zicoatl, Warden of the Core", "Mektul, the Forgemaster", "Queen of Filth", "Ketzuli, High Priest of the Sun", "Viper Napuatzi", "Doryani, Royal Thaumaturge",
+            "The Blind Beast", "Krutog, Lord of Kin", "Captain Hartlin", "Omniphobia, Fear Manifest", "The Prisoner", "Diamora, Song of Death", "Scourge of the Skies", "Torvian, Hand of the Saviour", "Benedictus, First Herald of Utopia", "Tavakai, the Chieftain",
+            "Oswin, the Dread Warden", "Akthi", "Anundr", "Lythara, the Wayward Spear", "The Abominable Yeti"
+        ];
+        
+        bosses.sort((a, b) => b.length - a.length);
+
+        const bossRegex = new RegExp(`\\b(${bosses.join("|")})\\b`, "gi");
+        html = html.replace(bossRegex, '<span class="hl-boss">$1</span>');
+
+        html = html.replace(/\b(Waypoint|WP)\b/g, '<span class="hl-wp">Waypoint</span>');
+        html = html.replace(/\b(Gem)\b/g, '<span class="hl-item">Gem</span>');
+        html = html.replace(/\b(WARNING|Permanent)\b/gi, '<span class="hl-warn">$1</span>');
+
+        return html;
+    }
+
+    function render() {
+        app.innerHTML = '';
+        
+        campaignData.forEach((act, aIdx) => {
+            const actTitle = document.createElement('div');
+            actTitle.className = 'act-title';
+            actTitle.textContent = act.act;
+            app.appendChild(actTitle);
+
+            act.zones.forEach((zone, zIdx) => {
+                const card = document.createElement('div');
+                card.className = `zone-card ${zone.type}`;
+                
+                const header = document.createElement('div');
+                header.className = 'zone-header';
+                
+                const headerLeft = document.createElement('div');
+                headerLeft.className = 'zone-info';
+
+                const iconImg = document.createElement('img');
+                iconImg.src = `img/${ICONS[zone.icon] || 'Entrance.webp'}`;
+                iconImg.className = 'zone-icon-large';
+                
+                const title = document.createElement('div');
+                title.className = 'zone-title';
+                title.textContent = zone.name;
+
+                headerLeft.appendChild(iconImg);
+                headerLeft.appendChild(title);
+
+                const checkAllBtn = document.createElement('button');
+                checkAllBtn.className = 'check-all-btn';
+                checkAllBtn.textContent = '✓ All';
+                checkAllBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    toggleZone(aIdx, zIdx);
+                };
+
+                header.appendChild(headerLeft);
+                header.appendChild(checkAllBtn);
+                card.appendChild(header);
+
+                const content = document.createElement('div');
+                content.className = 'zone-content';
+
+                let visibleTasks = 0;
+
+                zone.tasks.forEach((task, tIdx) => {
+                    const isDone = progressState[`${aIdx}-${zIdx}-${tIdx}`];
+                    
+                    if (hideCompleted && isDone) return;
+                    visibleTasks++;
+
+                    const row = document.createElement('div');
+                    row.className = `task-row ${isDone ? 'completed' : ''} ${zone.sub ? 'sub-zone' : ''}`;
+                    
+                    row.onclick = () => {
+                        const key = `${aIdx}-${zIdx}-${tIdx}`;
+                        if(progressState[key]) delete progressState[key];
+                        else progressState[key] = true;
+                        saveState();
+                        render();
+                    };
+
+                    const iconCol = document.createElement('img');
+                    iconCol.src = `img/${ICONS[task.icon] || 'QuestItem.webp'}`;
+                    iconCol.className = 'task-icon';
+
+                    const infoCol = document.createElement('div');
+                    infoCol.className = 'task-info';
+                    
+                    let badges = "";
+                    if(task.opt) badges += `<span class="badge badge-opt">OPT</span>`;
+                    if(task.perm) badges += `<span class="badge badge-perm">PERM</span>`;
+
+                    infoCol.innerHTML = `
+                        <div class="task-desc">${badges} ${processText(task.text)}</div>
+                        ${task.note ? `<div class="task-note">${processText(task.note)}</div>` : ''}
+                    `;
+
+                    const checkbox = document.createElement('div');
+                    checkbox.className = 'checkbox';
+
+                    row.appendChild(iconCol);
+                    row.appendChild(infoCol);
+                    row.appendChild(checkbox);
+                    content.appendChild(row);
+                });
+
+                if (visibleTasks > 0 || !hideCompleted) {
+                    card.appendChild(content);
+                    app.appendChild(card);
+                }
+            });
+        });
+        updateProgress();
+    }
+</script>
+
+</body>
+</html>
