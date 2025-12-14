@@ -614,7 +614,7 @@ const DB = [
                         id: "a2-z11-item", 
                         icon: "item", 
                         text: "Find Sun Clan Relic", 
-                        note: "Random drop from enemies (Green text)" // Agregado aquí
+                        note: "Random drop from enemies" // Agregado aquí
                     },
                     { 
                         id: "a2-z11-boss", 
