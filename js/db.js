@@ -598,7 +598,7 @@ const DB = [
                 layout: { confidence: "Low", text: "Hug a wall." },
                 steps: [
                     { id: "a2-z10-wp", icon: "wp", text: "Activate Waypoint" },
-                    { id: "a2-z10-item", icon: "item", text: "Find Sun Clan Relic" },
+                    // Eliminado: Find Sun Clan Relic (Estaba mal aquí)
                     { id: "a2-z10-exit", icon: "exit", text: "Find exit to The Bone Pits" }
                 ]
             },
@@ -610,6 +610,12 @@ const DB = [
                 layout: { confidence: "High", text: "Boss room is in line with entrance." },
                 steps: [
                     { id: "a2-z11-wp", icon: "wp", text: "Activate Waypoint" },
+                    { 
+                        id: "a2-z11-item", 
+                        icon: "item", 
+                        text: "Find Sun Clan Relic", 
+                        note: "Random drop from enemies (Green text)" // Agregado aquí
+                    },
                     { 
                         id: "a2-z11-boss", 
                         icon: "boss", 
