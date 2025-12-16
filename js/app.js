@@ -92,13 +92,11 @@ const app = {
         const isSpeedrun = state.settings.mode === 'speedrun';
 
         DB.forEach((act, aIdx) => {
-            // Act Header
             const actHeader = document.createElement('div');
             actHeader.className = 'act-header-container';
 
             const actTitle = document.createElement('div');
             actTitle.className = 'act-title';
-            // Add Level Range if available
             const levelInfo = act.levels ? `<span class="act-levels">Lvl ${act.levels}</span>` : '';
             actTitle.innerHTML = `${act.act} ${levelInfo}`;
 
@@ -132,14 +130,12 @@ const app = {
                 left.appendChild(icon);
                 left.appendChild(name);
 
-                // Layout Compass (Hover + Click Logic)
                 if (zone.layout) {
                     const compassBtn = document.createElement('button');
                     compassBtn.className = 'layout-btn';
                     compassBtn.innerHTML = '🧭';
                     compassBtn.title = "Show Layout Guide";
                     
-                    // Logic: Hover shows it, Click locks it
                     compassBtn.onmouseenter = () => {
                         const tooltip = card.querySelector('.layout-tooltip');
                         if (!tooltip.classList.contains('locked')) tooltip.classList.add('show');
@@ -152,7 +148,7 @@ const app = {
                         e.stopPropagation();
                         const tooltip = card.querySelector('.layout-tooltip');
                         tooltip.classList.toggle('locked');
-                        tooltip.classList.toggle('show'); // Ensure it stays visible
+                        tooltip.classList.toggle('show');
                     };
                     left.appendChild(compassBtn);
                 }
@@ -262,13 +258,11 @@ const app = {
         if (state.progress[id]) delete state.progress[id];
         else {
             state.progress[id] = true;
-            // Auto-Start Timer on First Step of Act 1
             if (id === 'a1-z1-boss' && !state.timer.running && state.timer.elapsed === 0 && state.settings.timerEnabled) {
                 app.toggleTimerRun();
             }
-            // Auto-Stop Timer on Final Step
             if (id === 'int-final-reward' && state.timer.running) {
-                app.toggleTimerRun(); // Stop
+                app.toggleTimerRun();
                 app.showEndgame();
             }
         }
@@ -374,7 +368,6 @@ const app = {
     showEndgame: () => {
         dom.finalTime.textContent = dom.timerVal.textContent;
         dom.endgameModal.classList.remove('hidden');
-        // Fire confetti logic here if we had a library, for now just modal
     },
     closeEndgame: () => dom.endgameModal.classList.add('hidden'),
     
