@@ -29,7 +29,7 @@
         </div>
 
         <!-- Controls -->
-        <div class="controls">
+         <div class="controls">
             <div class="mode-switch-container" title="Toggle Game Mode">
                 <label class="switch">
                     <input type="checkbox" id="mode-toggle">
@@ -37,6 +37,39 @@
                 </label>
                 <span id="mode-label" class="mode-label">Explorer</span>
             </div>
+
+            <!-- Info Button with Tooltip -->
+            <div class="tooltip-container">
+                <button class="icon-btn" onclick="app.toggleInfoModal()">
+                    ℹ️
+                </button>
+                <span class="header-tooltip">Campaign Guide</span>
+            </div>
+
+            <button class="icon-btn" onclick="app.toggleTheme()" title="Toggle Theme">
+                <span id="theme-icon">☀</span>
+            </button>
+            
+            <!-- Menu Button with Tooltip -->
+            <div class="settings-container tooltip-container">
+                <button class="settings-btn" onclick="app.toggleMenu()">⚙ Menu</button>
+                <span class="header-tooltip">Settings & Saves</span>
+                
+                <div id="settings-menu" class="dropdown-menu">
+                    <button class="dropdown-item" onclick="app.toggleHideCompleted()">
+                        <span id="hide-check">☐</span> Hide Completed
+                    </button>
+                    <button class="dropdown-item" onclick="app.toggleTimer()">
+                        <span id="timer-check">☐</span> Enable Speedrun Timer
+                    </button>
+                    <div class="separator"></div>
+                    <button class="dropdown-item" onclick="app.exportData()">Export Save</button>
+                    <button class="dropdown-item" onclick="app.importData()">Import Save</button>
+                    <div class="separator"></div>
+                    <button class="dropdown-item danger" onclick="app.resetProgress()">Reset All</button>
+                </div>
+            </div>
+        </div>
 
             <!-- Info Button -->
             <button class="icon-btn" onclick="app.toggleInfoModal()" title="Campaign Guide">
