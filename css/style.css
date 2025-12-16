@@ -45,14 +45,14 @@ h1 { margin: 0; font-size: 1.2rem; color: var(--c-gold); text-transform: upperca
 
 /* CONTROLS */
 .controls { display: flex; gap: 10px; align-items: center; }
-.icon-btn { background: none; border: none; color: var(--c-gold); font-size: 1.4rem; cursor: pointer; padding: 5px; display: flex; align-items: center; }
+.icon-btn { background: none; border: none; color: var(--c-gold); font-size: 1.4rem; cursor: pointer; padding: 5px; display: flex; align-items: center; justify-content: center; }
 
-/* SETTINGS CONTAINER & DROPDOWN (HOVER LOGIC) */
+/* SETTINGS MENU (HOVER LOGIC) */
 .settings-container { position: relative; display: flex; align-items: center; }
 .settings-btn { background: var(--bg-hover); border: 1px solid var(--border); color: var(--text-main); padding: 6px 12px; border-radius: 4px; cursor: pointer; font-weight: bold; }
 
 .dropdown-menu { 
-    display: none; 
+    display: none; /* Hidden by default */
     position: absolute; 
     right: 0; 
     top: 100%; 
@@ -66,14 +66,14 @@ h1 { margin: 0; font-size: 1.2rem; color: var(--c-gold); text-transform: upperca
     z-index: 500; 
 }
 
-/* SHOW MENU ON HOVER (PC) OR CLICK (MOBILE) */
+/* SHOW MENU ON HOVER */
 .settings-container:hover .dropdown-menu, 
 .dropdown-menu.show { 
     display: flex; 
     animation: fadeIn 0.2s;
 }
 
-/* Invisible bridge to prevent menu closing when moving mouse */
+/* Invisible bridge to keep menu open when moving mouse */
 .dropdown-menu::before {
     content: "";
     position: absolute;
@@ -88,7 +88,7 @@ h1 { margin: 0; font-size: 1.2rem; color: var(--c-gold); text-transform: upperca
 .dropdown-item.danger { color: var(--c-warn); }
 .separator { height: 1px; background: var(--border); margin: 0; }
 
-/* TOOLTIPS (FIXED POSITIONING) */
+/* TOOLTIPS (FOR INFO BUTTON) */
 .tooltip-wrapper { position: relative; display: flex; align-items: center; }
 .tooltip-text {
     visibility: hidden;
@@ -100,7 +100,7 @@ h1 { margin: 0; font-size: 1.2rem; color: var(--c-gold); text-transform: upperca
     border-radius: 4px;
     border: 1px solid var(--c-gold);
     
-    /* ABSOLUTE POSITIONING TO PREVENT LAYOUT BREAK */
+    /* ABSOLUTE POSITIONING (CRITICAL) */
     position: absolute;
     top: 120%;
     left: 50%;
