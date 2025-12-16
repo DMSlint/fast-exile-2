@@ -1122,50 +1122,6 @@ const DB = [
                 ]
             },
             {
-                name: "Isle of Kin",
-                type: "zone",
-                icon: "exit",
-                layout: {
-                    confidence: "Medium",
-                    text: "Opposite direction of dock. Primal Arena at back wall.",
-                    speedrun: "Head opposite dock."
-                },
-                steps: [
-                    { id: "a4-z2-wp", icon: "wp", text: "Activate Waypoint" },
-                    { 
-                        id: "a4-z2-boss", 
-                        icon: "boss", 
-                        text: "Kill The Blind Beast",
-                        bossData: {
-                            name: "Blind Beast",
-                            dmg: ["phys", "light"],
-                            tips: ["Fulminating Fissure: Detonates fissures.", "Hasted below 50%."]
-                        }
-                    },
-                    { id: "a4-z2-exit", icon: "exit", text: "Find Volcanic Warrens" }
-                ]
-            },
-            {
-                name: "Volcanic Warrens",
-                type: "zone",
-                icon: "exit",
-                sub: true,
-                layout: { confidence: "Low", text: "Winding. Boss opposite entrance." },
-                steps: [
-                    { id: "a4-z3-wp", icon: "wp", text: "Activate Waypoint" },
-                    { 
-                        id: "a4-z3-boss", 
-                        icon: "boss", 
-                        text: "Kill Krutog, Lord of Kin",
-                        bossData: {
-                            name: "Krutog",
-                            dmg: ["phys", "light"],
-                            tips: ["Corpse Toss: Explosions overlap.", "Sulphite Breath: Wide arc."]
-                        }
-                    }
-                ]
-            },
-            {
                 name: "Kedge Bay",
                 type: "zone",
                 icon: "exit",
@@ -1207,6 +1163,33 @@ const DB = [
                     }
                 ]
             },
+            // CRITICAL PATH: Shrike Island -> Free Matiki
+            {
+                name: "Shrike Island",
+                type: "zone",
+                icon: "exit",
+                layout: { confidence: "High", text: "Extremely linear. Follow the road." },
+                steps: [
+                    { id: "a4-z10-wp", icon: "wp", text: "Activate Waypoint" },
+                    { 
+                        id: "a4-z10-boss", 
+                        icon: "boss", 
+                        text: "Kill Scourge of the Skies",
+                        bossData: {
+                            name: "Scourge",
+                            dmg: ["phys"],
+                            tips: ["Visceral Slam: Leaves phys degen.", "Rain of Viscera: Keep moving."]
+                        }
+                    },
+                    { 
+                        id: "a4-z10-npc", 
+                        icon: "npc", 
+                        text: "Free Matiki (Prisoner)", 
+                        note: "REQUIRED to unlock Eye of Hinekora." 
+                    }
+                ]
+            },
+            // UNLOCKED: Eye of Hinekora
             {
                 name: "Eye of Hinekora",
                 type: "zone",
@@ -1262,6 +1245,51 @@ const DB = [
                     { id: "a4-z7-exit", icon: "exit", text: "Enter Trial of the Ancestors" }
                 ]
             },
+            // SIDE AREAS
+            {
+                name: "Isle of Kin",
+                type: "zone",
+                icon: "exit",
+                layout: {
+                    confidence: "Medium",
+                    text: "Opposite direction of dock. Primal Arena at back wall.",
+                    speedrun: "Head opposite dock."
+                },
+                steps: [
+                    { id: "a4-z2-wp", icon: "wp", text: "Activate Waypoint" },
+                    { 
+                        id: "a4-z2-boss", 
+                        icon: "boss", 
+                        text: "Kill The Blind Beast",
+                        bossData: {
+                            name: "Blind Beast",
+                            dmg: ["phys", "light"],
+                            tips: ["Fulminating Fissure: Detonates fissures.", "Hasted below 50%."]
+                        }
+                    },
+                    { id: "a4-z2-exit", icon: "exit", text: "Find Volcanic Warrens" }
+                ]
+            },
+            {
+                name: "Volcanic Warrens",
+                type: "zone",
+                icon: "exit",
+                sub: true,
+                layout: { confidence: "Low", text: "Winding. Boss opposite entrance." },
+                steps: [
+                    { id: "a4-z3-wp", icon: "wp", text: "Activate Waypoint" },
+                    { 
+                        id: "a4-z3-boss", 
+                        icon: "boss", 
+                        text: "Kill Krutog, Lord of Kin",
+                        bossData: {
+                            name: "Krutog",
+                            dmg: ["phys", "light"],
+                            tips: ["Corpse Toss: Explosions overlap.", "Sulphite Breath: Wide arc."]
+                        }
+                    }
+                ]
+            },
             {
                 name: "Whakapanu Island",
                 type: "zone",
@@ -1304,25 +1332,6 @@ const DB = [
                             name: "Diamora",
                             dmg: ["phys", "cold"],
                             tips: ["Siren Song: Avoid beam (Petrification).", "Submerge: Stand near entrance."]
-                        }
-                    }
-                ]
-            },
-            {
-                name: "Shrike Island",
-                type: "zone",
-                icon: "exit",
-                layout: { confidence: "High", text: "Extremely linear. Follow the road." },
-                steps: [
-                    { id: "a4-z10-wp", icon: "wp", text: "Activate Waypoint" },
-                    { 
-                        id: "a4-z10-boss", 
-                        icon: "boss", 
-                        text: "Kill Scourge of the Skies",
-                        bossData: {
-                            name: "Scourge",
-                            dmg: ["phys"],
-                            tips: ["Visceral Slam: Leaves phys degen.", "Rain of Viscera: Keep moving."]
                         }
                     }
                 ]
