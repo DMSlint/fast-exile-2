@@ -4,6 +4,7 @@ const DB = [
     // =========================================================================
     {
         act: "Act 1: Ogham",
+        levels: "1-15",
         zones: [
             {
                 name: "The Riverbank",
@@ -404,6 +405,7 @@ const DB = [
     // =========================================================================
     {
         act: "Act 2: Vastiri",
+        levels: "16-28",
         zones: [
             {
                 name: "Vastiri Outskirts",
@@ -598,7 +600,7 @@ const DB = [
                 layout: { confidence: "Low", text: "Hug a wall." },
                 steps: [
                     { id: "a2-z10-wp", icon: "wp", text: "Activate Waypoint" },
-                    // Eliminado: Find Sun Clan Relic (Estaba mal aquí)
+                    { id: "a2-z10-item", icon: "item", text: "Find Sun Clan Relic" },
                     { id: "a2-z10-exit", icon: "exit", text: "Find exit to The Bone Pits" }
                 ]
             },
@@ -610,12 +612,6 @@ const DB = [
                 layout: { confidence: "High", text: "Boss room is in line with entrance." },
                 steps: [
                     { id: "a2-z11-wp", icon: "wp", text: "Activate Waypoint" },
-                    { 
-                        id: "a2-z11-item", 
-                        icon: "item", 
-                        text: "Find Sun Clan Relic", 
-                        note: "Random drop from enemies" // Agregado aquí
-                    },
                     { 
                         id: "a2-z11-boss", 
                         icon: "boss", 
@@ -758,6 +754,7 @@ const DB = [
     // =========================================================================
     {
         act: "Act 3: Utzaal",
+        levels: "29-42",
         zones: [
             {
                 name: "Sandswept Marsh",
@@ -1114,6 +1111,7 @@ const DB = [
     // =========================================================================
     {
         act: "Act 4: Ngamakanui",
+        levels: "43-54",
         zones: [
             {
                 name: "Kingsmarch",
@@ -1446,6 +1444,7 @@ const DB = [
     // =========================================================================
     {
         act: "Interludes",
+        levels: "55-65+",
         zones: [
             {
                 name: "Wolvenhold",
