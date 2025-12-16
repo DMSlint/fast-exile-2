@@ -17,7 +17,7 @@
             <img src="img/QuestItem.webp" alt="Logo" class="brand-icon">
             <div class="brand-text">
                 <h1>FAST EXILE 2</h1>
-                <span class="version-tag">Beta 0.4</span>
+                <span class="version-tag">Beta 0.5</span>
             </div>
         </div>
 
@@ -164,6 +164,26 @@
                     <li><strong>Chaos (Ultimatum):</strong> Hazards stack. Generally harder than Sekhemas.</li>
                 </ul>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- ENDGAME MODAL -->
+<div id="endgame-modal" class="modal-overlay hidden" onclick="app.closeEndgame()">
+    <div class="modal-content" onclick="event.stopPropagation()" style="text-align: center;">
+        <button class="close-modal" onclick="app.closeEndgame()">×</button>
+        <h2 class="modal-title" style="color:var(--c-green)">🎉 Campaign Completed!</h2>
+        
+        <div class="guide-section">
+            <p style="font-size: 1.2rem; margin-bottom: 20px;">Welcome to the Endgame, Exile.</p>
+            
+            <div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:8px; margin-bottom:20px;">
+                <span style="color:var(--text-muted); font-size:0.9rem;">FINAL TIME</span>
+                <div id="final-time" style="font-family:monospace; font-size:2rem; color:var(--c-gold); font-weight:bold;">00:00:00</div>
+            </div>
+
+            <p>Your journey into the Atlas begins now.</p>
+            <button onclick="app.closeEndgame()" class="settings-btn" style="margin-top:10px; padding:10px 20px;">Close</button>
         </div>
     </div>
 </div>
