@@ -69,6 +69,8 @@ input:checked + .slider:before { transform: translateX(16px); }
 .timer-display { font-family: monospace; font-size: 1.1rem; color: var(--c-green); background: #000; padding: 4px 10px; border-radius: 4px; border: 1px solid var(--border); display: flex; gap: 8px; align-items: center; }
 .hidden { display: none !important; }
 #timer-toggle { background: none; border: none; color: var(--text-bright); cursor: pointer; font-size: 1rem; }
+#timer-reset { background: none; border: none; color: var(--c-warn); cursor: pointer; font-size: 1.1rem; padding: 0 5px; }
+#timer-reset:hover { transform: rotate(-90deg); transition: 0.3s; }
 
 /* SEARCH & PROGRESS */
 .subheader { max-width: var(--max-width); margin: 0 auto; padding: 10px 15px 0; }
@@ -76,7 +78,7 @@ input:checked + .slider:before { transform: translateX(16px); }
 .progress-bar { height: 3px; background: #333; margin-top: 10px; }
 .progress-fill { height: 100%; background: var(--c-gold); width: 0%; transition: width 0.3s; }
 
-/* --- STATS BAR (FIXED SIZING) --- */
+/* --- STATS BAR --- */
 .stats-bar {
     display: flex;
     gap: 15px;
@@ -96,13 +98,12 @@ input:checked + .slider:before { transform: translateX(16px); }
     padding: 4px 10px;
     border-radius: 4px;
     border: 1px solid var(--border);
-    height: 32px; /* Altura fija para evitar saltos */
+    height: 32px;
 }
-/* FORZAR TAMAÑO DE ICONOS */
 .stat-icon-img {
     width: 20px !important;
     height: 20px !important;
-    min-width: 20px; /* Evita que se aplaste */
+    min-width: 20px;
     object-fit: contain;
     display: block;
 }
@@ -110,9 +111,50 @@ input:checked + .slider:before { transform: translateX(16px); }
 #stat-passives { color: var(--c-gold); font-weight: bold; }
 #stat-spirit { color: var(--c-blue); font-weight: bold; }
 
+/* --- HEADER TOOLTIPS (FIXED) --- */
+.tooltip-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.tooltip-text {
+    visibility: hidden;
+    opacity: 0;
+    background-color: #111;
+    color: var(--c-gold);
+    text-align: center;
+    padding: 5px 10px;
+    border-radius: 4px;
+    border: 1px solid var(--c-gold);
+    
+    /* Positioning (Floating) */
+    position: absolute !important; /* Force absolute */
+    top: 120%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 300;
+    
+    /* Style */
+    font-size: 0.75rem;
+    white-space: nowrap;
+    pointer-events: none;
+    transition: opacity 0.2s, visibility 0.2s;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+
+.tooltip-wrapper:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
 /* ZONES */
 .container { max-width: var(--max-width); margin: 0 auto; padding: 20px 10px; }
-.act-title { font-size: 1.6rem; color: var(--c-gold); text-align: center; margin: 30px 0 20px; text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+.act-header-container { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); margin: 30px 0 20px; padding-bottom: 10px; }
+.act-title { margin: 0; border: none; padding: 0; font-size: 1.6rem; color: var(--c-gold); text-transform: uppercase; letter-spacing: 2px; }
+.act-levels { font-size: 0.9rem; color: var(--text-muted); margin-left: 10px; font-weight: normal; vertical-align: middle; border: 1px solid var(--border); padding: 2px 6px; border-radius: 4px; background: rgba(0,0,0,0.3); }
+.act-check-btn { background: transparent; border: 1px solid var(--c-gold); color: var(--c-gold); padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; font-weight: bold; transition: all 0.2s; }
+.act-check-btn:hover { background: var(--c-gold); color: #000; }
 
 .zone-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px; margin-bottom: 15px; overflow: hidden; }
 .zone-card.town { border-left: 4px solid var(--c-green); }
@@ -167,10 +209,10 @@ input:checked + .slider:before { transform: translateX(16px); }
 
 /* --- INFO MODAL (FIXED POSITIONING) --- */
 .modal-overlay {
-    position: fixed !important; /* Forzar posición fija */
+    position: fixed !important;
     top: 0; left: 0; width: 100%; height: 100%;
     background: rgba(0,0,0,0.85);
-    z-index: 9999 !important; /* Encima de TODO */
+    z-index: 9999 !important;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -311,90 +353,4 @@ footer { text-align: center; margin-top: 60px; color: var(--text-muted); font-si
     .zone-header { padding: 8px 10px; }
     .mode-label { display: none; }
     .ascendancy-grid { grid-template-columns: 1fr; }
-/* ACT HEADER CONTAINER */
-.act-header-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid var(--border);
-    margin: 30px 0 20px;
-    padding-bottom: 10px;
-}
-.act-title {
-    margin: 0;
-    border: none; /* Remove old border */
-    padding: 0;
-}
-.act-check-btn {
-    background: transparent;
-    border: 1px solid var(--c-gold);
-    color: var(--c-gold);
-    padding: 4px 10px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.8rem;
-    font-weight: bold;
-    transition: all 0.2s;
-}
-.act-check-btn:hover {
-    background: var(--c-gold);
-    color: #000;
-}
-
-/* TIMER RESET BTN */
-#timer-reset {
-    background: none;
-    border: none;
-    color: var(--c-warn);
-    cursor: pointer;
-    font-size: 1.1rem;
-    padding: 0 5px;
-}
-#timer-reset:hover { transform: rotate(-90deg); transition: 0.3s; 
-.act-levels {
-    font-size: 0.9rem;
-    color: var(--text-muted);
-    margin-left: 10px;
-    font-weight: normal;
-    vertical-align: middle;
-    border: 1px solid var(--border);
-    padding: 2px 6px;
-    border-radius: 4px;
-    background: rgba(0,0,0,0.3);
-    /* HEADER TOOLTIPS */
-.tooltip-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
-.tooltip-text {
-    visibility: hidden;
-    opacity: 0;
-    background-color: #111;
-    color: var(--c-gold);
-    text-align: center;
-    padding: 5px 10px;
-    border-radius: 4px;
-    border: 1px solid var(--c-gold);
-    
-    /* Positioning (Floating) */
-    position: absolute;
-    top: 110%; /* Justo debajo del botón */
-    left: 50%;
-    transform: translateX(-50%); /* Centrado exacto */
-    z-index: 300;
-    
-    /* Style */
-    font-size: 0.75rem;
-    white-space: nowrap;
-    pointer-events: none;
-    transition: opacity 0.2s, visibility 0.2s;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-}
-
-/* Show on Hover */
-.tooltip-wrapper:hover .tooltip-text {
-    visibility: visible;
-    opacity: 1;
 }
