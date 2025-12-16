@@ -52,11 +52,12 @@ const dom = {
     themeIcon: document.getElementById('theme-icon'),
     settingsMenu: document.getElementById('settings-menu'),
     backToTop: document.getElementById('back-to-top'),
-    // Stats
     statPassives: document.getElementById('stat-passives'),
     statSpirit: document.getElementById('stat-spirit'),
     statRes: document.getElementById('stat-res'),
-    infoModal: document.getElementById('info-modal')
+    infoModal: document.getElementById('info-modal'),
+    endgameModal: document.getElementById('endgame-modal'),
+    finalTime: document.getElementById('final-time')
 };
 
 // --- INITIALIZATION ---
@@ -91,13 +92,15 @@ const app = {
         const isSpeedrun = state.settings.mode === 'speedrun';
 
         DB.forEach((act, aIdx) => {
-            // Act Header Container
+            // Act Header
             const actHeader = document.createElement('div');
             actHeader.className = 'act-header-container';
 
             const actTitle = document.createElement('div');
             actTitle.className = 'act-title';
-            actTitle.textContent = act.act;
+            // Add Level Range if available
+            const levelInfo = act.levels ? `<span class="act-levels">Lvl ${act.levels}</span>` : '';
+            actTitle.innerHTML = `${act.act} ${levelInfo}`;
 
             const actCheckBtn = document.createElement('button');
             actCheckBtn.className = 'act-check-btn';
@@ -129,15 +132,27 @@ const app = {
                 left.appendChild(icon);
                 left.appendChild(name);
 
+                // Layout Compass (Hover + Click Logic)
                 if (zone.layout) {
                     const compassBtn = document.createElement('button');
                     compassBtn.className = 'layout-btn';
                     compassBtn.innerHTML = '🧭';
                     compassBtn.title = "Show Layout Guide";
+                    
+                    // Logic: Hover shows it, Click locks it
+                    compassBtn.onmouseenter = () => {
+                        const tooltip = card.querySelector('.layout-tooltip');
+                        if (!tooltip.classList.contains('locked')) tooltip.classList.add('show');
+                    };
+                    compassBtn.onmouseleave = () => {
+                        const tooltip = card.querySelector('.layout-tooltip');
+                        if (!tooltip.classList.contains('locked')) tooltip.classList.remove('show');
+                    };
                     compassBtn.onclick = (e) => {
                         e.stopPropagation();
                         const tooltip = card.querySelector('.layout-tooltip');
-                        tooltip.classList.toggle('show');
+                        tooltip.classList.toggle('locked');
+                        tooltip.classList.toggle('show'); // Ensure it stays visible
                     };
                     left.appendChild(compassBtn);
                 }
@@ -158,13 +173,8 @@ const app = {
                     const tooltip = document.createElement('div');
                     tooltip.className = 'layout-tooltip';
                     const confidenceClass = zone.layout.confidence === 'Very High' || zone.layout.confidence === 'High' ? 'conf-high' : 'conf-low';
-                    
                     let layoutText = isSpeedrun && zone.layout.speedrun ? zone.layout.speedrun : zone.layout.text;
-
-                    tooltip.innerHTML = `
-                        <span class="confidence-tag ${confidenceClass}">Confidence: ${zone.layout.confidence}</span>
-                        <p>${layoutText}</p>
-                    `;
+                    tooltip.innerHTML = `<span class="confidence-tag ${confidenceClass}">Confidence: ${zone.layout.confidence}</span><p>${layoutText}</p>`;
                     card.appendChild(tooltip);
                 }
 
@@ -220,7 +230,6 @@ const app = {
                     if (step.bossData) {
                         const bossCard = document.createElement('div');
                         bossCard.className = 'boss-card';
-                        
                         let dmgHtml = '<div class="dmg-icons">';
                         if (step.bossData.dmg) {
                             step.bossData.dmg.forEach(type => {
@@ -228,13 +237,11 @@ const app = {
                             });
                         }
                         dmgHtml += '</div>';
-
                         let tipsHtml = '<ul class="boss-tip-list">';
                         step.bossData.tips.forEach(tip => {
                             tipsHtml += `<li>${tip}</li>`;
                         });
                         tipsHtml += '</ul>';
-
                         bossCard.innerHTML = dmgHtml + tipsHtml;
                         content.appendChild(bossCard);
                     }
@@ -253,7 +260,18 @@ const app = {
     // --- LOGIC ---
     toggleStep: (id) => {
         if (state.progress[id]) delete state.progress[id];
-        else state.progress[id] = true;
+        else {
+            state.progress[id] = true;
+            // Auto-Start Timer on First Step of Act 1
+            if (id === 'a1-z1-boss' && !state.timer.running && state.timer.elapsed === 0 && state.settings.timerEnabled) {
+                app.toggleTimerRun();
+            }
+            // Auto-Stop Timer on Final Step
+            if (id === 'int-final-reward' && state.timer.running) {
+                app.toggleTimerRun(); // Stop
+                app.showEndgame();
+            }
+        }
         app.save();
         app.render();
     },
@@ -274,7 +292,6 @@ const app = {
 
     toggleAct: (aIdx) => {
         const act = DB[aIdx];
-        // Check if all steps in act are done
         let allDone = true;
         act.zones.forEach((zone, zIdx) => {
             zone.steps.forEach((step, sIdx) => {
@@ -321,13 +338,10 @@ const app = {
         dom.progressFill.style.width = `${pct}%`;
     },
 
-    // --- STATS CALCULATOR (IMPROVED) ---
     calculateStats: () => {
         let passives = 0;
         let spirit = 0;
         let resPenalty = 0;
-
-        // Act Boss IDs for Penalty Calculation
         const actBossIds = ["a1-z16-boss2", "a2-z16-boss", "a3-z17-boss", "a4-z15-boss"];
 
         DB.forEach((act, aIdx) => {
@@ -337,29 +351,18 @@ const app = {
                     const isDone = state.progress[id];
                     
                     if (isDone) {
-                        // Check for Passives
                         const fullText = (step.text + " " + (step.note || "")).toLowerCase();
-                        
-                        if (fullText.includes("passive point") || fullText.includes("passive skill")) {
-                            passives += 2;
-                        }
-
-                        // Check for Spirit
+                        if (fullText.includes("passive point") || fullText.includes("passive skill")) passives += 2;
                         if (fullText.includes("spirit")) {
                             if (fullText.includes("30")) spirit += 30;
                             if (fullText.includes("40")) spirit += 40;
                         }
-
-                        // Check for Res Penalty (Act Bosses)
-                        if (actBossIds.includes(id)) {
-                            resPenalty -= 10;
-                        }
+                        if (actBossIds.includes(id)) resPenalty -= 10;
                     }
                 });
             });
         });
 
-        // Update UI
         dom.statPassives.textContent = `${passives}/24`;
         dom.statSpirit.textContent = `${spirit}/100`;
         dom.statRes.textContent = `${resPenalty}%`;
@@ -367,6 +370,13 @@ const app = {
 
     toggleMenu: () => dom.settingsMenu.classList.toggle('show'),
     toggleInfoModal: () => dom.infoModal.classList.toggle('hidden'),
+    
+    showEndgame: () => {
+        dom.finalTime.textContent = dom.timerVal.textContent;
+        dom.endgameModal.classList.remove('hidden');
+        // Fire confetti logic here if we had a library, for now just modal
+    },
+    closeEndgame: () => dom.endgameModal.classList.add('hidden'),
     
     toggleTheme: () => {
         state.settings.theme = state.settings.theme === 'dark' ? 'light' : 'dark';
