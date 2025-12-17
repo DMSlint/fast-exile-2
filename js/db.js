@@ -1473,6 +1473,11 @@ const DB = [
                 name: "Scorched Farmlands",
                 type: "zone",
                 icon: "exit",
+                layout: {
+                    confidence: "Medium",
+                    text: "Find the wall of darkness.",
+                    speedrun: "Head towards darkness."
+                },
                 steps: [
                     { id: "int1-z2-wp", icon: "wp", text: "Activate Waypoint" },
                     { 
@@ -1492,6 +1497,11 @@ const DB = [
                 name: "Stones of Serle",
                 type: "zone",
                 icon: "exit",
+                layout: {
+                    confidence: "High",
+                    text: "Activate 6 Megaliths on edges, then center.",
+                    speedrun: "Circle edges -> Center."
+                },
                 steps: [
                     { id: "int1-z3-wp", icon: "wp", text: "Activate Waypoint" },
                     { id: "int1-z3-quest", icon: "quest", text: "Activate 6 Megaliths" },
@@ -1546,6 +1556,24 @@ const DB = [
                         }
                     }
                 ]
+            },
+            {
+                name: "Holten Estate",
+                type: "zone",
+                icon: "boss",
+                steps: [
+                    { id: "int1-z7-wp", icon: "wp", text: "Activate Waypoint" },
+                    { 
+                        id: "int1-z7-boss", 
+                        icon: "boss", 
+                        text: "Kill Thane Wulfric & Lady Elyswyth",
+                        bossData: {
+                            name: "Thane & Lady",
+                            dmg: ["phys", "fire", "chaos"],
+                            tips: ["Thane = Fire, Lady = Chaos."]
+                        }
+                    }
+                ]
             }
         ]
     },
@@ -1566,6 +1594,11 @@ const DB = [
                 name: "The Khari Crossing",
                 type: "zone",
                 icon: "exit",
+                layout: {
+                    confidence: "Medium",
+                    text: "Huge desert. Head North for Shrine, then Boss.",
+                    speedrun: "North -> Shrine -> Boss."
+                },
                 steps: [
                     { id: "int2-z2-util", icon: "util", text: "Find Molten Shrine", perm: true, note: "Reward: +5% Max Life" },
                     { 
@@ -1581,6 +1614,7 @@ const DB = [
                 name: "Pools of Khatal",
                 type: "zone",
                 icon: "exit",
+                layout: { confidence: "Low", text: "Pathing zone. Just find exit." },
                 steps: [
                     { id: "int2-z3-wp", icon: "wp", text: "Activate Waypoint" },
                     { id: "int2-z3-exit", icon: "exit", text: "Find Sel Khari Sanctuary" }
@@ -1601,7 +1635,8 @@ const DB = [
                             dmg: ["phys", "chaos", "fire"],
                             tips: ["Snake boss."]
                         }
-                    }
+                    },
+                    { id: "int2-z4-opt", icon: "util", text: "Two Wishes (Rare Items)", opt: true }
                 ]
             },
             {
@@ -1627,6 +1662,7 @@ const DB = [
                 name: "Qimah",
                 type: "zone",
                 icon: "quest",
+                layout: { confidence: "Medium", text: "Dense zone. Find Pillars." },
                 steps: [
                     { id: "int2-z6-wp", icon: "wp", text: "Activate Waypoint" },
                     { 
@@ -1747,7 +1783,7 @@ const DB = [
                 icon: "exit",
                 steps: [
                     { id: "int3-z6-wp", icon: "wp", text: "Activate Waypoint" },
-                    { id: "int3-z6-npc", icon: "npc", text: "Talk to Elder Madox", note: "Free Unique Item" },
+                    { id: "int3-z6-npc", icon: "npc", text: "Talk to Elder Madox", opt: true, note: "Free Unique Item" },
                     { id: "int3-z6-exit", icon: "exit", text: "Find Etched Ravine" }
                 ]
             },
