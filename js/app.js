@@ -83,15 +83,21 @@ const app = {
         dom.timerReset.addEventListener('click', app.resetTimer);
         window.addEventListener('scroll', app.handleScroll);
         
-        // MENU LOGIC (CLICK ONLY - NO CSS HOVER CONFLICT)
+        // MENU LOGIC (ROBUST TOGGLE)
         const settingsBtn = document.querySelector('.settings-btn');
         const menu = document.getElementById('settings-menu');
 
         settingsBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            menu.classList.toggle('show');
+            // Simple toggle: if open, close. If closed, open.
+            if (menu.classList.contains('show')) {
+                menu.classList.remove('show');
+            } else {
+                menu.classList.add('show');
+            }
         });
 
+        // Close when clicking anywhere else
         document.addEventListener('click', (e) => {
             if (!settingsBtn.contains(e.target) && !menu.contains(e.target)) {
                 menu.classList.remove('show');
@@ -105,7 +111,6 @@ const app = {
     render: () => {
         dom.app.innerHTML = '';
         const isSpeedrun = state.settings.mode === 'speedrun';
-        // Check if device supports hover (Mouse) vs Touch
         const canHover = window.matchMedia('(hover: hover)').matches;
 
         DB.forEach((act, aIdx) => {
@@ -147,14 +152,12 @@ const app = {
                 left.appendChild(icon);
                 left.appendChild(name);
 
-                // Layout Compass Logic
                 if (zone.layout) {
                     const compassBtn = document.createElement('button');
                     compassBtn.className = 'layout-btn';
                     compassBtn.innerHTML = '🧭';
                     compassBtn.title = "Show Layout Guide";
                     
-                    // Only apply hover logic on non-touch devices
                     if (canHover) {
                         compassBtn.onmouseenter = () => {
                             const tooltip = card.querySelector('.layout-tooltip');
@@ -166,17 +169,13 @@ const app = {
                         };
                     }
 
-                    // Click Logic (Works for both, handles locking)
                     compassBtn.onclick = (e) => {
                         e.stopPropagation();
                         const tooltip = card.querySelector('.layout-tooltip');
-                        
                         if (tooltip.classList.contains('show')) {
-                            // If visible, close it (Toggle behavior for mobile)
                             tooltip.classList.remove('show');
                             tooltip.classList.remove('locked');
                         } else {
-                            // If hidden, open and lock it
                             tooltip.classList.add('show');
                             tooltip.classList.add('locked');
                         }
@@ -525,10 +524,22 @@ const app = {
     filterSearch: () => {
         const term = dom.search.value.toLowerCase();
         const rows = document.querySelectorAll('.task-row');
+        let firstMatch = null;
+
         rows.forEach(row => {
             const text = row.innerText.toLowerCase();
-            row.style.display = text.includes(term) ? 'flex' : 'none';
+            if (text.includes(term)) {
+                row.style.display = 'flex';
+                if (!firstMatch) firstMatch = row;
+            } else {
+                row.style.display = 'none';
+            }
         });
+
+        // Scroll to first match
+        if (firstMatch && term.length > 2) {
+            firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
     }
 };
 
