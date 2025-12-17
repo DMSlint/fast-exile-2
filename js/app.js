@@ -83,19 +83,16 @@ const app = {
         dom.timerReset.addEventListener('click', app.resetTimer);
         window.addEventListener('scroll', app.handleScroll);
         
-        // --- MENU LOGIC (FIXED) ---
+        // MENU LOGIC
         const settingsBtn = document.querySelector('.settings-btn');
         const menu = document.getElementById('settings-menu');
 
-        // Toggle on click (Works for both PC Click and Mobile Tap)
         settingsBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             menu.classList.toggle('show');
         });
 
-        // Close when clicking anywhere else
         document.addEventListener('click', (e) => {
-            // If click is NOT on the button AND NOT inside the menu
             if (!settingsBtn.contains(e.target) && !menu.contains(e.target)) {
                 menu.classList.remove('show');
             }
