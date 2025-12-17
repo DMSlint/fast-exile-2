@@ -309,4 +309,30 @@ footer { text-align: center; margin-top: 60px; color: var(--text-muted); font-si
     .logo-icon { width: 32px !important; }
     .logo-title { font-size: 1.1rem; }
     .logo-subtitle { display: none; }
+   
+/* MOBILE FIX FOR ACT HEADERS */
+@media (max-width: 600px) {
+    .act-header-container {
+        flex-direction: column; /* Apilar verticalmente */
+        align-items: flex-start; /* Alinear a la izquierda */
+        gap: 10px; /* Espacio entre título y botón */
+    }
+    
+    .act-title {
+        font-size: 1.4rem; /* Un poco más pequeño para que quepa */
+        line-height: 1.2;
+    }
+    
+    .act-levels {
+        display: inline-block;
+        margin-top: 5px;
+        margin-left: 0; /* Quitar margen izquierdo si salta de línea */
+        font-size: 0.8rem;
+    }
+    
+    .act-check-btn {
+        align-self: flex-end; /* Mover el botón a la derecha */
+        width: auto;
+    }
+
 }
