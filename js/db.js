@@ -549,7 +549,7 @@ const DB = [
                             tips: ["Bone Cage: Find the opening or break a wall.", "Death Nova: Explosive projectiles."]
                         }
                     },
-                    { id: "a2-z7-item", icon: "item", text: "Find Kabala Clan Relic" },
+                    { id: "a2-z7-item", icon: "item", text: "Find Kabala Clan Relic", note: "Random drop from enemies" },
                     { id: "a2-z7-exit", icon: "exit", text: "Find exit to The Lost City" }
                 ]
             },
