@@ -6,17 +6,21 @@
     <title>Fast Exile 2 - Campaign Helper</title>
     <meta name="description" content="Interactive leveling tracker & speedrun timer for Path of Exile 2.">
     <link rel="icon" type="image/webp" href="img/QuestItem.webp">
+    
     <!-- FONTS (Cinzel & Fontin) -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Fontin&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Fontin&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
 <!-- HEADER -->
 <header>
-   <div class="brand">
+    <div class="header-content">
+        <!-- BRANDING / LOGO -->
+        <div class="brand">
             <div class="logo-wrapper">
                 <img src="img/QuestItem.webp" alt="Logo" class="logo-icon">
                 <div class="logo-text-group">
@@ -39,7 +43,7 @@
         <!-- Controls -->
         <div class="controls">
             
-            <!-- KO-FI BUTTON (FIXED SIZE) -->
+            <!-- KO-FI BUTTON -->
             <a href="https://ko-fi.com/dmslint" target="_blank" class="kofi-btn-header" title="Support Development">
                 <img src="https://storage.ko-fi.com/cdn/cup-border.png" alt="Ko-fi" style="width: 18px; height: auto; display: block;">
                 <span class="kofi-text">Buy me a Coffee</span>
@@ -53,7 +57,7 @@
                 <span id="mode-label" class="mode-label">Explorer</span>
             </div>
 
-            <!-- Info Button (Tooltip Wrapper) -->
+            <!-- Info Button -->
             <div class="tooltip-wrapper">
                 <button class="icon-btn" onclick="app.toggleInfoModal()">ℹ️</button>
                 <div class="tooltip-text">Campaign Guide</div>
@@ -63,7 +67,7 @@
                 <span id="theme-icon">☀</span>
             </button>
             
-            <!-- Menu Button (Hover Dropdown) -->
+            <!-- Menu Button -->
             <div class="settings-container">
                 <button class="settings-btn" onclick="app.toggleMenu()">⚙ Menu</button>
                 
@@ -117,7 +121,6 @@
         <button class="close-modal" onclick="app.toggleInfoModal()">×</button>
         <h2 class="modal-title">Campaign Guide</h2>
         
-        <!-- RESISTANCES SECTION -->
         <div class="guide-section">
             <h3><img src="img/resistances.webp" class="inline-icon"> Resistance Penalties</h3>
             <p>Permanent penalty to all Elemental Resistances (Chaos excluded) applied after each Act.</p>
@@ -127,13 +130,11 @@
             </ul>
         </div>
 
-        <!-- ASCENDANCY SECTION -->
         <div class="guide-section">
             <h3><img src="img/passive.webp" class="inline-icon"> Ascendancy & Trials</h3>
             <p>Unlock up to 8 points. You can change your Ascendancy by redoing a Trial of the same tier and unallocating points (costs Gold).</p>
             
             <div class="ascendancy-grid">
-                <!-- 1st -->
                 <div class="asc-card">
                     <div class="asc-header">1st Ascension (Points 1 & 2)</div>
                     <div class="asc-body">
@@ -142,8 +143,6 @@
                         <span class="text-muted">Key: Djinn Barya</span>
                     </div>
                 </div>
-                
-                <!-- 2nd -->
                 <div class="asc-card">
                     <div class="asc-header">2nd Ascension (Points 3 & 4)</div>
                     <div class="asc-body">
@@ -152,8 +151,6 @@
                         • OR Djinn Barya <span class="lvl-tag">Lvl 45+</span>
                     </div>
                 </div>
-
-                <!-- 3rd -->
                 <div class="asc-card">
                     <div class="asc-header">3rd Ascension (Points 5 & 6)</div>
                     <div class="asc-body">
@@ -162,8 +159,6 @@
                         • Ultimatum <span class="lvl-tag">Lvl 65+</span> (10 Rnds)
                     </div>
                 </div>
-
-                <!-- 4th -->
                 <div class="asc-card">
                     <div class="asc-header">4th Ascension (Points 7 & 8)</div>
                     <div class="asc-body">
@@ -174,7 +169,6 @@
                 </div>
             </div>
 
-            <!-- TRIAL TIPS BOX -->
             <div class="tips-box">
                 <h4>💡 Trial Tactics</h4>
                 <ul class="guide-list compact">
