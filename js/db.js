@@ -1454,20 +1454,87 @@ const DB = [
     },
 
     // =========================================================================
-    // INTERLUDES
+    // INTERLUDES (SPLIT INTO 3 ACTS)
     // =========================================================================
     {
-        act: "Interludes",
-        levels: "55-65+",
+        act: "Interlude 1: Curse of Holten",
+        levels: "55-58",
         zones: [
+            {
+                name: "The Refuge",
+                type: "town",
+                icon: "town",
+                steps: [
+                    { id: "int1-z1-npc", icon: "npc", text: "Talk to Renly & Una" },
+                    { id: "int1-z1-exit", icon: "exit", text: "Enter Scorched Farmlands" }
+                ]
+            },
+            {
+                name: "Scorched Farmlands",
+                type: "zone",
+                icon: "exit",
+                steps: [
+                    { id: "int1-z2-wp", icon: "wp", text: "Activate Waypoint" },
+                    { 
+                        id: "int1-z2-boss", 
+                        icon: "boss", 
+                        text: "Kill Isolde & Heldra",
+                        bossData: {
+                            name: "Isolde & Heldra",
+                            dmg: ["cold", "fire"],
+                            tips: ["Isolde = Ice, Heldra = Fire. Kill both."]
+                        }
+                    },
+                    { id: "int1-z2-exit", icon: "exit", text: "Find Stones of Serle" }
+                ]
+            },
+            {
+                name: "Stones of Serle",
+                type: "zone",
+                icon: "exit",
+                steps: [
+                    { id: "int1-z3-wp", icon: "wp", text: "Activate Waypoint" },
+                    { id: "int1-z3-quest", icon: "quest", text: "Activate 6 Megaliths" },
+                    { 
+                        id: "int1-z3-boss", 
+                        icon: "boss", 
+                        text: "Kill Siora, Blade of the Mists",
+                        bossData: {
+                            name: "Siora",
+                            dmg: ["phys", "light"],
+                            tips: ["Darkness Phase: Run to glowing Megalith."]
+                        }
+                    }
+                ]
+            },
+            {
+                name: "The Blackwood",
+                type: "zone",
+                icon: "exit",
+                steps: [
+                    { id: "int1-z4-wp", icon: "wp", text: "Activate Waypoint" },
+                    { id: "int1-z4-opt", icon: "util", text: "Find Omen Altars", opt: true },
+                    { id: "int1-z4-exit", icon: "exit", text: "Find Holten" }
+                ]
+            },
+            {
+                name: "Holten",
+                type: "zone",
+                icon: "exit",
+                steps: [
+                    { id: "int1-z5-wp", icon: "wp", text: "Activate Waypoint" },
+                    { id: "int1-z5-npc", icon: "npc", text: "Talk to The Ferryman (Rune Vendor)" },
+                    { id: "int1-z5-exit", icon: "exit", text: "Find Wolvenhold" }
+                ]
+            },
             {
                 name: "Wolvenhold",
                 type: "zone",
                 icon: "boss",
                 steps: [
-                    { id: "int-z1-wp", icon: "wp", text: "Activate Waypoint" },
+                    { id: "int1-z6-wp", icon: "wp", text: "Activate Waypoint" },
                     { 
-                        id: "int-z1-boss", 
+                        id: "int1-z6-boss", 
                         icon: "boss", 
                         text: "Kill Oswin, the Dread Warden", 
                         perm: true, 
@@ -1479,15 +1546,30 @@ const DB = [
                         }
                     }
                 ]
+            }
+        ]
+    },
+    {
+        act: "Interlude 2: The Stolen Barya",
+        levels: "58-62",
+        zones: [
+            {
+                name: "The Khari Bazaar",
+                type: "town",
+                icon: "town",
+                steps: [
+                    { id: "int2-z1-npc", icon: "npc", text: "Talk to Sekhema Asala" },
+                    { id: "int2-z1-exit", icon: "exit", text: "Enter Khari Crossing" }
+                ]
             },
             {
                 name: "The Khari Crossing",
                 type: "zone",
                 icon: "exit",
                 steps: [
-                    { id: "int-z2-util", icon: "util", text: "Find Molten Shrine", perm: true, note: "Reward: +5% Max Life" },
+                    { id: "int2-z2-util", icon: "util", text: "Find Molten Shrine", perm: true, note: "Reward: +5% Max Life" },
                     { 
-                        id: "int-z2-boss", 
+                        id: "int2-z2-boss", 
                         icon: "boss", 
                         text: "Kill Akthi & Anundr", 
                         perm: true, 
@@ -1496,18 +1578,108 @@ const DB = [
                 ]
             },
             {
+                name: "Pools of Khatal",
+                type: "zone",
+                icon: "exit",
+                steps: [
+                    { id: "int2-z3-wp", icon: "wp", text: "Activate Waypoint" },
+                    { id: "int2-z3-exit", icon: "exit", text: "Find Sel Khari Sanctuary" }
+                ]
+            },
+            {
+                name: "Sel Khari Sanctuary",
+                type: "zone",
+                icon: "exit",
+                steps: [
+                    { id: "int2-z4-wp", icon: "wp", text: "Activate Waypoint" },
+                    { 
+                        id: "int2-z4-boss", 
+                        icon: "boss", 
+                        text: "Kill Elzarah, the Cobra Lord",
+                        bossData: {
+                            name: "Elzarah",
+                            dmg: ["phys", "chaos", "fire"],
+                            tips: ["Snake boss."]
+                        }
+                    }
+                ]
+            },
+            {
+                name: "The Galai Gates",
+                type: "zone",
+                icon: "exit",
+                steps: [
+                    { id: "int2-z5-wp", icon: "wp", text: "Activate Waypoint" },
+                    { 
+                        id: "int2-z5-boss", 
+                        icon: "boss", 
+                        text: "Kill Vornas, the Fell Flame",
+                        bossData: {
+                            name: "Vornas",
+                            dmg: ["phys", "light"],
+                            tips: ["Guards entrance to Qimah."]
+                        }
+                    },
+                    { id: "int2-z5-exit", icon: "exit", text: "Enter Qimah" }
+                ]
+            },
+            {
                 name: "Qimah",
                 type: "zone",
                 icon: "quest",
                 steps: [
-                    { id: "int-z3-wp", icon: "wp", text: "Activate Waypoint" },
+                    { id: "int2-z6-wp", icon: "wp", text: "Activate Waypoint" },
                     { 
-                        id: "int-z3-util", 
+                        id: "int2-z6-util", 
                         icon: "util", 
                         text: "Find Seven Pillars", 
                         perm: true, 
                         note: "Choose Bonus (Swappable)" 
+                    },
+                    { id: "int2-z6-exit", icon: "exit", text: "Enter Qimah Reservoir" }
+                ]
+            },
+            {
+                name: "Qimah Reservoir",
+                type: "zone",
+                icon: "boss",
+                steps: [
+                    { id: "int2-z7-wp", icon: "wp", text: "Activate Waypoint" },
+                    { 
+                        id: "int2-z7-boss", 
+                        icon: "boss", 
+                        text: "Kill Azmadi, the Faridun Prince",
+                        bossData: {
+                            name: "Azmadi",
+                            dmg: ["phys"],
+                            tips: ["Long combos. Dodge until opening."]
+                        }
                     }
+                ]
+            }
+        ]
+    },
+    {
+        act: "Interlude 3: Doryani's Contingency",
+        levels: "62-65+",
+        zones: [
+            {
+                name: "The Glade",
+                type: "town",
+                icon: "town",
+                steps: [
+                    { id: "int3-z1-npc", icon: "npc", text: "Talk to Doryani" },
+                    { id: "int3-z1-exit", icon: "exit", text: "Enter Ashen Forest" }
+                ]
+            },
+            {
+                name: "Ashen Forest",
+                type: "zone",
+                icon: "exit",
+                steps: [
+                    { id: "int3-z2-wp", icon: "wp", text: "Activate Waypoint" },
+                    { id: "int3-z2-opt", icon: "util", text: "Find Ancient Monument", opt: true, note: "Reward: Lvl 14 Gem" },
+                    { id: "int3-z2-exit", icon: "exit", text: "Find Kriar Village" }
                 ]
             },
             {
@@ -1515,9 +1687,9 @@ const DB = [
                 type: "zone",
                 icon: "boss",
                 steps: [
-                    { id: "int-z4-wp", icon: "wp", text: "Activate Waypoint" },
+                    { id: "int3-z3-wp", icon: "wp", text: "Activate Waypoint" },
                     { 
-                        id: "int-z4-boss", 
+                        id: "int3-z3-boss", 
                         icon: "boss", 
                         text: "Kill Lythara, the Wayward Spear", 
                         perm: true, 
@@ -1531,13 +1703,32 @@ const DB = [
                 ]
             },
             {
+                name: "Glacial Tarn",
+                type: "zone",
+                icon: "exit",
+                steps: [
+                    { id: "int3-z4-wp", icon: "wp", text: "Activate Waypoint" },
+                    { 
+                        id: "int3-z4-boss", 
+                        icon: "boss", 
+                        text: "Kill Rakkar, the Frozen Talon",
+                        bossData: {
+                            name: "Rakkar",
+                            dmg: ["phys", "cold"],
+                            tips: ["Guards entrance to Peaks."]
+                        }
+                    },
+                    { id: "int3-z4-exit", icon: "exit", text: "Find Howling Caves" }
+                ]
+            },
+            {
                 name: "Howling Caves",
                 type: "zone",
                 icon: "boss",
                 steps: [
-                    { id: "int-z5-wp", icon: "wp", text: "Activate Waypoint" },
+                    { id: "int3-z5-wp", icon: "wp", text: "Activate Waypoint" },
                     { 
-                        id: "int-z5-boss", 
+                        id: "int3-z5-boss", 
                         icon: "boss", 
                         text: "Kill The Abominable Yeti", 
                         perm: true, 
@@ -1551,7 +1742,54 @@ const DB = [
                 ]
             },
             {
-                name: "End of Interludes",
+                name: "Kriar Peaks",
+                type: "zone",
+                icon: "exit",
+                steps: [
+                    { id: "int3-z6-wp", icon: "wp", text: "Activate Waypoint" },
+                    { id: "int3-z6-npc", icon: "npc", text: "Talk to Elder Madox", note: "Free Unique Item" },
+                    { id: "int3-z6-exit", icon: "exit", text: "Find Etched Ravine" }
+                ]
+            },
+            {
+                name: "Etched Ravine",
+                type: "zone",
+                icon: "exit",
+                steps: [
+                    { id: "int3-z7-wp", icon: "wp", text: "Activate Waypoint" },
+                    { 
+                        id: "int3-z7-boss", 
+                        icon: "boss", 
+                        text: "Kill Stormgore, the Guardian",
+                        bossData: {
+                            name: "Stormgore",
+                            dmg: ["phys", "light"],
+                            tips: ["Similar to Blackjaw."]
+                        }
+                    },
+                    { id: "int3-z7-exit", icon: "exit", text: "Enter Cuachic Vault" }
+                ]
+            },
+            {
+                name: "The Cuachic Vault",
+                type: "zone",
+                icon: "boss",
+                steps: [
+                    { id: "int3-z8-wp", icon: "wp", text: "Activate Waypoint" },
+                    { 
+                        id: "int3-z8-boss", 
+                        icon: "boss", 
+                        text: "Kill Zelina & Zolin",
+                        bossData: {
+                            name: "Zelina & Zolin",
+                            dmg: ["phys", "cold"],
+                            tips: ["Blood Priestess & Priest."]
+                        }
+                    }
+                ]
+            },
+            {
+                name: "End of Campaign",
                 type: "town",
                 icon: "town",
                 steps: [
