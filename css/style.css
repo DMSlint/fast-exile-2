@@ -234,7 +234,7 @@ footer { text-align: center; margin-top: 60px; color: var(--text-muted); font-si
 @media (max-width: 600px) { 
     .task-row { padding: 10px; } 
     .zone-header { padding: 8px 10px; } 
-    .mode-label { display: none; } 
+    /* .mode-label { display: none; }  <-- ELIMINADO PARA QUE SE VEA */
     .ascendancy-grid { grid-template-columns: 1fr; } 
     .kofi-text { display: none; } 
     .kofi-btn-header { padding: 4px 8px; } 
