@@ -38,7 +38,7 @@ body { background: var(--bg-core); color: var(--text-main); font-family: var(--f
 /* HEADER */
 header { background: var(--bg-header); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px); box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
 .header-content { max-width: var(--max-width); margin: 0 auto; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; }
-/* --- BRANDING & LOGO --- */
+
 /* --- BRANDING & LOGO (FIXED) --- */
 .brand {
     display: flex;
@@ -48,34 +48,32 @@ header { background: var(--bg-header); border-bottom: 1px solid var(--border); p
 
 .logo-wrapper {
     display: flex;
-    align-items: center; /* Alinea icono y texto verticalmente */
-    gap: 12px; /* Espacio entre el icono verde y el texto */
+    align-items: center;
+    gap: 12px;
     text-decoration: none;
 }
 
 .logo-icon {
-    width: 38px !important; /* Tamaño fijo del icono */
+    width: 38px !important;
     height: auto;
-    filter: drop-shadow(0 0 8px rgba(85, 255, 85, 0.3)); /* Resplandor verde */
+    filter: drop-shadow(0 0 8px rgba(85, 255, 85, 0.3));
     display: block;
 }
 
 .logo-text-group {
     display: flex;
-    flex-direction: column; /* Pone el Título arriba y el subtítulo abajo */
+    flex-direction: column;
     justify-content: center;
     line-height: 1;
 }
 
 .logo-title {
-    font-family: 'Cinzel', serif; /* Fuente RPG */
+    font-family: 'Cinzel', serif;
     font-size: 1.4rem;
-    font-weight: 900; /* Muy grueso */
+    font-weight: 900;
     margin: 0;
     text-transform: uppercase;
     letter-spacing: 1px;
-    
-    /* Efecto Dorado Metálico */
     background: linear-gradient(180deg, #fff5d1 0%, #dfcf99 45%, #b89f5e 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -110,17 +108,11 @@ header { background: var(--bg-header); border-bottom: 1px solid var(--border); p
     box-shadow: 0 0 5px rgba(85, 255, 85, 0.4);
 }
 
-/* Ajuste para móviles */
-@media (max-width: 600px) {
-    .logo-icon { width: 32px !important; }
-    .logo-title { font-size: 1.1rem; }
-    .logo-subtitle { display: none; } /* Ocultar subtítulo en móvil para ahorrar espacio */
-}
 /* CONTROLS */
 .controls { display: flex; gap: 10px; align-items: center; }
 .icon-btn { background: none; border: none; color: var(--c-gold); font-size: 1.4rem; cursor: pointer; padding: 5px; display: flex; align-items: center; justify-content: center; }
 
-/* KO-FI BUTTON (HEADER) */
+/* KO-FI BUTTON */
 .kofi-btn-header {
     display: flex;
     align-items: center;
@@ -144,13 +136,12 @@ header { background: var(--bg-header); border-bottom: 1px solid var(--border); p
     transform: translateY(-1px);
     box-shadow: 0 0 10px rgba(175, 96, 37, 0.4);
 }
-/* Force icon size in CSS too */
 .kofi-btn-header img {
     width: 18px !important;
     height: auto !important;
 }
 
-/* SETTINGS MENU (HOVER LOGIC) */
+/* SETTINGS MENU */
 .settings-container { position: relative; display: flex; align-items: center; }
 .settings-btn { background: var(--bg-hover); border: 1px solid var(--border); color: var(--text-main); padding: 6px 12px; border-radius: 4px; cursor: pointer; font-weight: bold; }
 
@@ -308,4 +299,14 @@ footer { text-align: center; margin-top: 60px; color: var(--text-muted); font-si
 #back-to-top { position: fixed; bottom: 20px; right: 20px; background: var(--c-gold); color: #000; border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.5); z-index: 90; display: none; }
 
 @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
-@media (max-width: 600px) { .task-row { padding: 10px; } .zone-header { padding: 8px 10px; } .mode-label { display: none; } .ascendancy-grid { grid-template-columns: 1fr; } .kofi-text { display: none; } .kofi-btn-header { padding: 4px 8px; } }
+@media (max-width: 600px) { 
+    .task-row { padding: 10px; } 
+    .zone-header { padding: 8px 10px; } 
+    .mode-label { display: none; } 
+    .ascendancy-grid { grid-template-columns: 1fr; } 
+    .kofi-text { display: none; } 
+    .kofi-btn-header { padding: 4px 8px; } 
+    .logo-icon { width: 32px !important; }
+    .logo-title { font-size: 1.1rem; }
+    .logo-subtitle { display: none; }
+}
