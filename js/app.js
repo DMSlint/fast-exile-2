@@ -83,35 +83,20 @@ const app = {
         dom.timerReset.addEventListener('click', app.resetTimer);
         window.addEventListener('scroll', app.handleScroll);
         
-        // MOBILE MENU FIX: Close menu when clicking outside
-        document.addEventListener('click', (e) => {
-            const isClickInside = e.target.closest('.settings-container');
-            if (!isClickInside) {
-                // Remove hover effect logic on mobile by forcing hide if needed
-                // Actually, CSS :hover handles desktop. For mobile, we might need a toggle class if :hover sticks.
-                // But usually, tapping outside clears the :hover state on iOS.
-                // If it persists, we can force focus away.
-                document.activeElement.blur();
-            }
-        });
-
-        // Force menu toggle on click for mobile if hover is sticky
+        // MOBILE MENU LOGIC
         const settingsBtn = document.querySelector('.settings-btn');
+        const menu = document.getElementById('settings-menu');
+
+        // Toggle on click
         settingsBtn.addEventListener('click', (e) => {
-            // On mobile, the first tap triggers hover. A second tap might be needed or we can toggle a class.
-            // Let's try toggling a 'show' class for better mobile control.
-            const menu = document.getElementById('settings-menu');
-            menu.classList.toggle('mobile-show');
             e.stopPropagation();
+            menu.classList.toggle('show');
         });
 
-        // Close menu when clicking outside (Robust version)
-        window.addEventListener('click', (e) => {
-            if (!e.target.matches('.settings-btn')) {
-                const menu = document.getElementById('settings-menu');
-                if (menu.classList.contains('mobile-show')) {
-                    menu.classList.remove('mobile-show');
-                }
+        // Close when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!settingsBtn.contains(e.target) && !menu.contains(e.target)) {
+                menu.classList.remove('show');
             }
         });
         
@@ -162,12 +147,14 @@ const app = {
                 left.appendChild(icon);
                 left.appendChild(name);
 
+                // Layout Compass Logic
                 if (zone.layout) {
                     const compassBtn = document.createElement('button');
                     compassBtn.className = 'layout-btn';
                     compassBtn.innerHTML = '🧭';
                     compassBtn.title = "Show Layout Guide";
                     
+                    // Desktop Hover
                     compassBtn.onmouseenter = () => {
                         const tooltip = card.querySelector('.layout-tooltip');
                         if (!tooltip.classList.contains('locked')) tooltip.classList.add('show');
@@ -176,11 +163,21 @@ const app = {
                         const tooltip = card.querySelector('.layout-tooltip');
                         if (!tooltip.classList.contains('locked')) tooltip.classList.remove('show');
                     };
+
+                    // Click / Touch Logic
                     compassBtn.onclick = (e) => {
                         e.stopPropagation();
                         const tooltip = card.querySelector('.layout-tooltip');
-                        tooltip.classList.toggle('locked');
-                        tooltip.classList.toggle('show');
+                        
+                        if (tooltip.classList.contains('locked')) {
+                            // If locked, unlock and hide
+                            tooltip.classList.remove('locked');
+                            tooltip.classList.remove('show');
+                        } else {
+                            // If not locked, lock and show
+                            tooltip.classList.add('locked');
+                            tooltip.classList.add('show');
+                        }
                     };
                     left.appendChild(compassBtn);
                 }
@@ -395,9 +392,7 @@ const app = {
     },
 
     toggleMenu: () => {
-        // This is now handled by CSS hover for desktop
-        // But for mobile click support, we might need this if hover is flaky
-        // The event listener in init() handles the class toggle
+        // Handled by event listeners in init()
     },
     
     toggleInfoModal: () => dom.infoModal.classList.toggle('hidden'),
