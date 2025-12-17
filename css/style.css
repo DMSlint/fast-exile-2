@@ -25,7 +25,7 @@
     --bg-card: #e3dec8;
     --bg-header: #2b2820;
     --bg-hover: #dcd5bb;
-    --border: #b0a48f;
+    --border: #8f8570; /* Borde más oscuro para contraste */
     --text-main: #2f2f2f;
     --text-bright: #000000;
     --c-gold: #8a6d3b;
@@ -41,7 +41,7 @@ header { background: var(--bg-header); border-bottom: 1px solid var(--border); p
 
 /* BRANDING */
 .brand { display: flex; align-items: center; margin-right: auto; }
-.logo-wrapper { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.logo-wrapper { display: flex; align-items: center; gap: 8px; text-decoration: none; }
 .logo-icon { width: 38px !important; height: auto; filter: drop-shadow(0 0 8px rgba(85, 255, 85, 0.3)); display: block; }
 .logo-text-group { display: flex; flex-direction: column; justify-content: center; line-height: 1; }
 .logo-title { font-family: 'Cinzel', serif; font-size: 1.4rem; font-weight: 900; margin: 0; text-transform: uppercase; letter-spacing: 1px; background: linear-gradient(180deg, #fff5d1 0%, #dfcf99 45%, #b89f5e 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
@@ -50,11 +50,11 @@ header { background: var(--bg-header); border-bottom: 1px solid var(--border); p
 .version-badge { font-family: monospace; font-size: 0.6rem; color: #000; background: var(--c-green); padding: 1px 4px; border-radius: 2px; font-weight: bold; text-transform: uppercase; box-shadow: 0 0 5px rgba(85, 255, 85, 0.4); }
 
 /* CONTROLS */
-.controls { display: flex; gap: 10px; align-items: center; }
+.controls { display: flex; gap: 8px; align-items: center; }
 .icon-btn { background: none; border: none; color: var(--c-gold); font-size: 1.4rem; cursor: pointer; padding: 5px; display: flex; align-items: center; justify-content: center; }
 
 /* KO-FI BUTTON */
-.kofi-btn-header { display: flex; align-items: center; gap: 6px; background: linear-gradient(180deg, #2a2a2a 0%, #1a1a1a 100%); border: 1px solid var(--c-unique); color: var(--c-unique); padding: 4px 10px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 0.85rem; transition: all 0.2s ease; margin-right: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.5); height: 30px; }
+.kofi-btn-header { display: flex; align-items: center; gap: 6px; background: linear-gradient(180deg, #2a2a2a 0%, #1a1a1a 100%); border: 1px solid var(--c-unique); color: var(--c-unique); padding: 4px 10px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 0.85rem; transition: all 0.2s ease; margin-right: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.5); height: 30px; }
 .kofi-btn-header:hover { background: var(--c-unique); color: #000; transform: translateY(-1px); box-shadow: 0 0 10px rgba(175, 96, 37, 0.4); }
 .kofi-btn-header img { width: 18px !important; height: auto !important; }
 
@@ -218,24 +218,27 @@ footer { text-align: center; margin-top: 60px; color: var(--text-muted); font-si
 
 @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
 
-/* MOBILE ADJUSTMENTS */
+/* MOBILE ADJUSTMENTS (FIXED SPACING) */
 @media (max-width: 600px) { 
+    .header-content { padding: 8px 10px; }
+    .logo-icon { width: 28px !important; } /* Logo más pequeño */
+    .logo-title { font-size: 1rem; }
+    .logo-subtitle { display: none; }
+    
+    .controls { gap: 5px; } /* Menos espacio entre botones */
+    .kofi-text { display: none; }
+    .kofi-btn-header { padding: 4px 6px; margin-right: 2px; }
+    
+    .mode-label { font-size: 0.6rem; }
+    .switch { width: 28px; height: 16px; }
+    .slider:before { width: 10px; height: 10px; left: 3px; bottom: 3px; }
+    input:checked + .slider:before { transform: translateX(12px); }
+    
     .task-row { padding: 10px; } 
     .zone-header { padding: 8px 10px; } 
     .ascendancy-grid { grid-template-columns: 1fr; } 
-    .kofi-text { display: none; } 
-    .kofi-btn-header { padding: 4px 8px; } 
-    .logo-icon { width: 32px !important; }
-    .logo-title { font-size: 1.1rem; }
-    .logo-subtitle { display: none; }
     .act-header-container { flex-direction: column; align-items: flex-start; gap: 10px; }
     .act-title { font-size: 1.4rem; line-height: 1.2; }
     .act-levels { display: inline-block; margin-top: 5px; margin-left: 0; font-size: 0.8rem; }
     .act-check-btn { align-self: flex-end; width: auto; }
-    
-    /* FIX: Smaller Explorer Label for Mobile */
-    .mode-label { font-size: 0.65rem; } 
-    .switch { width: 28px; height: 16px; }
-    .slider:before { width: 10px; height: 10px; left: 3px; bottom: 3px; }
-    input:checked + .slider:before { transform: translateX(12px); }
 }
