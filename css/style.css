@@ -39,83 +39,83 @@ body { background: var(--bg-core); color: var(--text-main); font-family: var(--f
 header { background: var(--bg-header); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px); box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
 .header-content { max-width: var(--max-width); margin: 0 auto; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; }
 /* --- BRANDING & LOGO --- */
+/* --- BRANDING & LOGO (FIXED) --- */
 .brand {
     display: flex;
     align-items: center;
+    margin-right: auto; /* Empuja los controles a la derecha */
 }
 
 .logo-wrapper {
     display: flex;
-    align-items: center;
-    gap: 12px; /* Espacio entre icono y texto */
+    align-items: center; /* Alinea icono y texto verticalmente */
+    gap: 12px; /* Espacio entre el icono verde y el texto */
+    text-decoration: none;
 }
 
 .logo-icon {
-    width: 42px; /* Un poco más grande para que luzca */
+    width: 38px !important; /* Tamaño fijo del icono */
     height: auto;
-    filter: drop-shadow(0 0 5px rgba(85, 255, 85, 0.4)); /* Brillo verde sutil */
-    transition: transform 0.3s ease;
-}
-
-.logo-wrapper:hover .logo-icon {
-    transform: scale(1.1) rotate(-5deg); /* Efecto al pasar el mouse */
+    filter: drop-shadow(0 0 8px rgba(85, 255, 85, 0.3)); /* Resplandor verde */
+    display: block;
 }
 
 .logo-text-group {
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Pone el Título arriba y el subtítulo abajo */
     justify-content: center;
     line-height: 1;
 }
 
 .logo-title {
-    font-family: 'Cinzel', serif; /* La fuente RPG */
-    font-size: 1.6rem;
-    font-weight: 700;
+    font-family: 'Cinzel', serif; /* Fuente RPG */
+    font-size: 1.4rem;
+    font-weight: 900; /* Muy grueso */
     margin: 0;
-    color: var(--c-gold);
     text-transform: uppercase;
     letter-spacing: 1px;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8); /* Sombra para profundidad */
-    background: linear-gradient(180deg, #fff5d1 0%, #dfcf99 40%, #8a6d3b 100%); /* Degradado dorado */
+    
+    /* Efecto Dorado Metálico */
+    background: linear-gradient(180deg, #fff5d1 0%, #dfcf99 45%, #b89f5e 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.8);
 }
 
 .logo-meta {
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-top: 4px;
+    margin-top: 3px;
 }
 
 .logo-subtitle {
     font-family: var(--font-main);
-    font-size: 0.65rem;
-    color: var(--text-muted);
+    font-size: 0.6rem;
+    color: #888;
     text-transform: uppercase;
     letter-spacing: 2px;
+    font-weight: bold;
 }
 
 .version-badge {
     font-family: monospace;
     font-size: 0.6rem;
     color: #000;
-    background: var(--c-green); /* Fondo verde estilo "Quest" */
+    background: var(--c-green);
     padding: 1px 4px;
-    border-radius: 3px;
+    border-radius: 2px;
     font-weight: bold;
-    box-shadow: 0 0 5px rgba(85, 255, 85, 0.3);
     text-transform: uppercase;
+    box-shadow: 0 0 5px rgba(85, 255, 85, 0.4);
 }
 
 /* Ajuste para móviles */
 @media (max-width: 600px) {
-    .logo-icon { width: 32px; }
-    .logo-title { font-size: 1.2rem; }
+    .logo-icon { width: 32px !important; }
+    .logo-title { font-size: 1.1rem; }
     .logo-subtitle { display: none; } /* Ocultar subtítulo en móvil para ahorrar espacio */
 }
-
 /* CONTROLS */
 .controls { display: flex; gap: 10px; align-items: center; }
 .icon-btn { background: none; border: none; color: var(--c-gold); font-size: 1.4rem; cursor: pointer; padding: 5px; display: flex; align-items: center; justify-content: center; }
