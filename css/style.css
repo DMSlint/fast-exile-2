@@ -241,7 +241,7 @@ footer { text-align: center; margin-top: 60px; color: var(--text-muted); font-si
     display: flex !important;
     animation: fadeIn 0.2s;
 
-    /* KO-FI HEADER BUTTON */
+    /* KO-FI HEADER BUTTON (FIXED SIZE) */
 .kofi-btn-header {
     display: flex;
     align-items: center;
@@ -255,8 +255,9 @@ footer { text-align: center; margin-top: 60px; color: var(--text-muted); font-si
     font-weight: bold;
     font-size: 0.85rem;
     transition: all 0.2s ease;
-    margin-right: 5px;
+    margin-right: 10px; /* Espacio con el siguiente elemento */
     box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    height: 30px; /* Altura fija para alinear */
 }
 
 .kofi-btn-header:hover {
@@ -267,13 +268,13 @@ footer { text-align: center; margin-top: 60px; color: var(--text-muted); font-si
 }
 
 .kofi-icon {
-    width: 16px;
-    height: auto;
+    width: 20px !important; /* FORZAR TAMAÑO PEQUEÑO */
+    height: auto !important;
+    display: block;
 }
 
-/* Ocultar texto en móviles muy pequeños para ahorrar espacio */
+/* Ocultar texto en móviles muy pequeños */
 @media (max-width: 400px) {
     .kofi-text { display: none; }
-    .kofi-btn-header { padding: 4px 6px; }
-}
+    .kofi-btn-header { padding: 4px 8px; }
 }
