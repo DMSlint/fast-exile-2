@@ -1577,10 +1577,6 @@ const DB = [
             }
         ]
     },
-
-    // =========================================================================
-    // INTERLUDE 2: THE STOLEN BARYA
-    // =========================================================================
     {
         act: "Interlude 2: The Stolen Barya",
         levels: "58-62",
@@ -1618,22 +1614,24 @@ const DB = [
                 name: "Pools of Khatal",
                 type: "zone",
                 icon: "exit",
-                layout: { confidence: "Low", text: "Pathing zone. Just find exit." },
+                layout: { confidence: "Low", text: "Dead end zone.", speedrun: "Skip (No rewards)." },
                 steps: [
-                    { id: "int2-z3-wp", icon: "wp", text: "Activate Waypoint" },
-                    { id: "int2-z3-exit", icon: "exit", text: "Find Sel Khari Sanctuary" }
+                    { id: "int2-z3-wp", icon: "wp", text: "Activate Waypoint", opt: true },
+                    { id: "int2-z3-exit", icon: "exit", text: "Find Sel Khari Sanctuary", opt: true }
                 ]
             },
             {
                 name: "Sel Khari Sanctuary",
                 type: "zone",
                 icon: "exit",
+                layout: { confidence: "Medium", text: "Sanctuary.", speedrun: "Skip (No permanent rewards)." },
                 steps: [
-                    { id: "int2-z4-wp", icon: "wp", text: "Activate Waypoint" },
+                    { id: "int2-z4-wp", icon: "wp", text: "Activate Waypoint", opt: true },
                     { 
                         id: "int2-z4-boss", 
                         icon: "boss", 
                         text: "Kill Elzarah, the Cobra Lord",
+                        opt: true,
                         bossData: {
                             name: "Elzarah",
                             dmg: ["phys", "chaos", "fire"],
@@ -1647,6 +1645,7 @@ const DB = [
                 name: "The Galai Gates",
                 type: "zone",
                 icon: "exit",
+                layout: { confidence: "Medium", text: "Gateway to Qimah.", speedrun: "Kill Vornas -> Enter Qimah." },
                 steps: [
                     { id: "int2-z5-wp", icon: "wp", text: "Activate Waypoint" },
                     { 
@@ -1666,7 +1665,7 @@ const DB = [
                 name: "Qimah",
                 type: "zone",
                 icon: "quest",
-                layout: { confidence: "Medium", text: "Dense zone. Find Pillars." },
+                layout: { confidence: "Medium", text: "Dense zone. Find Pillars.", speedrun: "Find Pillars (Buff) -> Reservoir." },
                 steps: [
                     { id: "int2-z6-wp", icon: "wp", text: "Activate Waypoint" },
                     { 
@@ -1683,6 +1682,7 @@ const DB = [
                 name: "Qimah Reservoir",
                 type: "zone",
                 icon: "boss",
+                layout: { confidence: "High", text: "Final Boss.", speedrun: "Kill Azmadi." },
                 steps: [
                     { id: "int2-z7-wp", icon: "wp", text: "Activate Waypoint" },
                     { 
@@ -1699,10 +1699,6 @@ const DB = [
             }
         ]
     },
-
-    // =========================================================================
-    // INTERLUDE 3: DORYANI'S CONTINGENCY
-    // =========================================================================
     {
         act: "Interlude 3: Doryani's Contingency",
         levels: "62-65+",
