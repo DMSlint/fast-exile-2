@@ -611,7 +611,7 @@ const DB = [
                 layout: { confidence: "High", text: "Boss room is in line with entrance." },
                 steps: [
                     { id: "a2-z11-wp", icon: "wp", text: "Activate Waypoint" },
-                    { id: "a2-z11-item", icon: "item", text: "Find Sun Clan Relic" },
+                    { id: "a2-z11-item", icon: "item", text: "Find Sun Clan Relic", note: "Random drop from enemies" },
                     { 
                         id: "a2-z11-boss", 
                         icon: "boss", 
