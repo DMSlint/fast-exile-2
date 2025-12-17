@@ -83,22 +83,19 @@ const app = {
         dom.timerReset.addEventListener('click', app.resetTimer);
         window.addEventListener('scroll', app.handleScroll);
         
-        // MENU LOGIC (ROBUST TOGGLE)
+        // --- MENU LOGIC (FIXED) ---
         const settingsBtn = document.querySelector('.settings-btn');
         const menu = document.getElementById('settings-menu');
 
+        // Toggle on click (Works for both PC Click and Mobile Tap)
         settingsBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            // Simple toggle: if open, close. If closed, open.
-            if (menu.classList.contains('show')) {
-                menu.classList.remove('show');
-            } else {
-                menu.classList.add('show');
-            }
+            menu.classList.toggle('show');
         });
 
         // Close when clicking anywhere else
         document.addEventListener('click', (e) => {
+            // If click is NOT on the button AND NOT inside the menu
             if (!settingsBtn.contains(e.target) && !menu.contains(e.target)) {
                 menu.classList.remove('show');
             }
@@ -172,7 +169,7 @@ const app = {
                     compassBtn.onclick = (e) => {
                         e.stopPropagation();
                         const tooltip = card.querySelector('.layout-tooltip');
-                        if (tooltip.classList.contains('show')) {
+                        if (tooltip.classList.contains('show') && tooltip.classList.contains('locked')) {
                             tooltip.classList.remove('show');
                             tooltip.classList.remove('locked');
                         } else {
@@ -536,7 +533,6 @@ const app = {
             }
         });
 
-        // Scroll to first match
         if (firstMatch && term.length > 2) {
             firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
