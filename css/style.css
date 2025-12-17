@@ -38,10 +38,83 @@ body { background: var(--bg-core); color: var(--text-main); font-family: var(--f
 /* HEADER */
 header { background: var(--bg-header); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px); box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
 .header-content { max-width: var(--max-width); margin: 0 auto; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; }
-.brand { display: flex; align-items: center; gap: 10px; }
-.brand-icon { width: 32px; }
-h1 { margin: 0; font-size: 1.2rem; color: var(--c-gold); text-transform: uppercase; letter-spacing: 1px; }
-.version-tag { font-size: 0.7rem; color: var(--text-muted); border: 1px solid var(--border); padding: 1px 4px; border-radius: 3px; }
+/* --- BRANDING & LOGO --- */
+.brand {
+    display: flex;
+    align-items: center;
+}
+
+.logo-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px; /* Espacio entre icono y texto */
+}
+
+.logo-icon {
+    width: 42px; /* Un poco más grande para que luzca */
+    height: auto;
+    filter: drop-shadow(0 0 5px rgba(85, 255, 85, 0.4)); /* Brillo verde sutil */
+    transition: transform 0.3s ease;
+}
+
+.logo-wrapper:hover .logo-icon {
+    transform: scale(1.1) rotate(-5deg); /* Efecto al pasar el mouse */
+}
+
+.logo-text-group {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    line-height: 1;
+}
+
+.logo-title {
+    font-family: 'Cinzel', serif; /* La fuente RPG */
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin: 0;
+    color: var(--c-gold);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8); /* Sombra para profundidad */
+    background: linear-gradient(180deg, #fff5d1 0%, #dfcf99 40%, #8a6d3b 100%); /* Degradado dorado */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.logo-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.logo-subtitle {
+    font-family: var(--font-main);
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.version-badge {
+    font-family: monospace;
+    font-size: 0.6rem;
+    color: #000;
+    background: var(--c-green); /* Fondo verde estilo "Quest" */
+    padding: 1px 4px;
+    border-radius: 3px;
+    font-weight: bold;
+    box-shadow: 0 0 5px rgba(85, 255, 85, 0.3);
+    text-transform: uppercase;
+}
+
+/* Ajuste para móviles */
+@media (max-width: 600px) {
+    .logo-icon { width: 32px; }
+    .logo-title { font-size: 1.2rem; }
+    .logo-subtitle { display: none; } /* Ocultar subtítulo en móvil para ahorrar espacio */
+}
 
 /* CONTROLS */
 .controls { display: flex; gap: 10px; align-items: center; }
