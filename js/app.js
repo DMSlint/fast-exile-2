@@ -83,17 +83,15 @@ const app = {
         dom.timerReset.addEventListener('click', app.resetTimer);
         window.addEventListener('scroll', app.handleScroll);
         
-        // MOBILE MENU LOGIC
+        // MENU LOGIC (CLICK ONLY - NO CSS HOVER CONFLICT)
         const settingsBtn = document.querySelector('.settings-btn');
         const menu = document.getElementById('settings-menu');
 
-        // Toggle on click
         settingsBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             menu.classList.toggle('show');
         });
 
-        // Close when clicking outside
         document.addEventListener('click', (e) => {
             if (!settingsBtn.contains(e.target) && !menu.contains(e.target)) {
                 menu.classList.remove('show');
@@ -107,6 +105,8 @@ const app = {
     render: () => {
         dom.app.innerHTML = '';
         const isSpeedrun = state.settings.mode === 'speedrun';
+        // Check if device supports hover (Mouse) vs Touch
+        const canHover = window.matchMedia('(hover: hover)').matches;
 
         DB.forEach((act, aIdx) => {
             const actHeader = document.createElement('div');
@@ -154,29 +154,31 @@ const app = {
                     compassBtn.innerHTML = '🧭';
                     compassBtn.title = "Show Layout Guide";
                     
-                    // Desktop Hover
-                    compassBtn.onmouseenter = () => {
-                        const tooltip = card.querySelector('.layout-tooltip');
-                        if (!tooltip.classList.contains('locked')) tooltip.classList.add('show');
-                    };
-                    compassBtn.onmouseleave = () => {
-                        const tooltip = card.querySelector('.layout-tooltip');
-                        if (!tooltip.classList.contains('locked')) tooltip.classList.remove('show');
-                    };
+                    // Only apply hover logic on non-touch devices
+                    if (canHover) {
+                        compassBtn.onmouseenter = () => {
+                            const tooltip = card.querySelector('.layout-tooltip');
+                            if (!tooltip.classList.contains('locked')) tooltip.classList.add('show');
+                        };
+                        compassBtn.onmouseleave = () => {
+                            const tooltip = card.querySelector('.layout-tooltip');
+                            if (!tooltip.classList.contains('locked')) tooltip.classList.remove('show');
+                        };
+                    }
 
-                    // Click / Touch Logic
+                    // Click Logic (Works for both, handles locking)
                     compassBtn.onclick = (e) => {
                         e.stopPropagation();
                         const tooltip = card.querySelector('.layout-tooltip');
                         
-                        if (tooltip.classList.contains('locked')) {
-                            // If locked, unlock and hide
-                            tooltip.classList.remove('locked');
+                        if (tooltip.classList.contains('show')) {
+                            // If visible, close it (Toggle behavior for mobile)
                             tooltip.classList.remove('show');
+                            tooltip.classList.remove('locked');
                         } else {
-                            // If not locked, lock and show
-                            tooltip.classList.add('locked');
+                            // If hidden, open and lock it
                             tooltip.classList.add('show');
+                            tooltip.classList.add('locked');
                         }
                     };
                     left.appendChild(compassBtn);
@@ -392,7 +394,7 @@ const app = {
     },
 
     toggleMenu: () => {
-        // Handled by event listeners in init()
+        // Handled by event listeners
     },
     
     toggleInfoModal: () => dom.infoModal.classList.toggle('hidden'),
