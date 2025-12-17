@@ -240,4 +240,40 @@ footer { text-align: center; margin-top: 60px; color: var(--text-muted); font-si
 .dropdown-menu.mobile-show {
     display: flex !important;
     animation: fadeIn 0.2s;
+
+    /* KO-FI HEADER BUTTON */
+.kofi-btn-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(180deg, #2a2a2a 0%, #1a1a1a 100%);
+    border: 1px solid var(--c-unique);
+    color: var(--c-unique);
+    padding: 4px 10px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+    margin-right: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+}
+
+.kofi-btn-header:hover {
+    background: var(--c-unique);
+    color: #000;
+    transform: translateY(-1px);
+    box-shadow: 0 0 10px rgba(175, 96, 37, 0.4);
+}
+
+.kofi-icon {
+    width: 16px;
+    height: auto;
+}
+
+/* Ocultar texto en móviles muy pequeños para ahorrar espacio */
+@media (max-width: 400px) {
+    .kofi-text { display: none; }
+    .kofi-btn-header { padding: 4px 6px; }
+}
 }
