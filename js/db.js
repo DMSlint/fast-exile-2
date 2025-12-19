@@ -1258,7 +1258,7 @@ const DB = [
                 layout: {
                     confidence: "Medium",
                     text: "Opposite direction of dock. Primal Arena at back wall.",
-                    speedrun: "Head opposite dock."
+                    speedrun: "Skip Blind Beast -> Warrens."
                 },
                 steps: [
                     { id: "a4-z2-wp", icon: "wp", text: "Activate Waypoint" },
@@ -1541,6 +1541,7 @@ const DB = [
                 name: "Wolvenhold",
                 type: "zone",
                 icon: "boss",
+                layout: { confidence: "Medium", text: "Estate.", speedrun: "Kill Oswin (Passive)." },
                 steps: [
                     { id: "int1-z6-wp", icon: "wp", text: "Activate Waypoint" },
                     { 
@@ -1561,6 +1562,7 @@ const DB = [
                 name: "Holten Estate",
                 type: "zone",
                 icon: "boss",
+                layout: { confidence: "Medium", text: "Courtyard.", speedrun: "Kill Thane & Lady." },
                 steps: [
                     { id: "int1-z7-wp", icon: "wp", text: "Activate Waypoint" },
                     { 
@@ -1614,24 +1616,23 @@ const DB = [
                 name: "Pools of Khatal",
                 type: "zone",
                 icon: "exit",
-                layout: { confidence: "Low", text: "Dead end zone.", speedrun: "Skip (No rewards)." },
+                layout: { confidence: "Low", text: "Dead end zone.", speedrun: "Just run through." },
                 steps: [
-                    { id: "int2-z3-wp", icon: "wp", text: "Activate Waypoint", opt: true },
-                    { id: "int2-z3-exit", icon: "exit", text: "Find Sel Khari Sanctuary", opt: true }
+                    { id: "int2-z3-wp", icon: "wp", text: "Activate Waypoint" },
+                    { id: "int2-z3-exit", icon: "exit", text: "Find Sel Khari Sanctuary" }
                 ]
             },
             {
                 name: "Sel Khari Sanctuary",
                 type: "zone",
                 icon: "exit",
-                layout: { confidence: "Medium", text: "Sanctuary.", speedrun: "Skip (No permanent rewards)." },
+                layout: { confidence: "Medium", text: "Sanctuary.", speedrun: "Kill Elzarah -> Exit." },
                 steps: [
-                    { id: "int2-z4-wp", icon: "wp", text: "Activate Waypoint", opt: true },
+                    { id: "int2-z4-wp", icon: "wp", text: "Activate Waypoint" },
                     { 
                         id: "int2-z4-boss", 
                         icon: "boss", 
                         text: "Kill Elzarah, the Cobra Lord",
-                        opt: true,
                         bossData: {
                             name: "Elzarah",
                             dmg: ["phys", "chaos", "fire"],
