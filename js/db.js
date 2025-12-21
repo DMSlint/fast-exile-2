@@ -549,7 +549,7 @@ const DB = [
                             tips: ["Bone Cage: Find the opening or break a wall.", "Death Nova: Explosive projectiles."]
                         }
                     },
-                    { id: "a2-z7-item", icon: "item", text: "Find Kabala Clan Relic" },
+                    { id: "a2-z7-item", icon: "item", text: "Find Kabala Clan Relic", note: "Random drop from enemies" },
                     { id: "a2-z7-exit", icon: "exit", text: "Find exit to The Lost City" }
                 ]
             },
@@ -611,6 +611,7 @@ const DB = [
                 layout: { confidence: "High", text: "Boss room is in line with entrance." },
                 steps: [
                     { id: "a2-z11-wp", icon: "wp", text: "Activate Waypoint" },
+                    { id: "a2-z11-item", icon: "item", text: "Find Sun Clan Relic", note: "Random drop from enemies" },
                     { 
                         id: "a2-z11-item", 
                         icon: "item", 
